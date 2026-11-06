@@ -1,0 +1,1250 @@
+<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>HelsTJ ? Job Tracker</title><style>
+:root{--bg:#f5f6fa;--card:#fff;--ink:#171923;--muted:#667085;--line:#e4e7ec;--purple:#6d45d8;--purple2:#eee9ff;--green:#138a55;--red:#c33838;--amber:#a86400;--blue:#2864c5}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}header{background:#171525;color:#fff;padding:26px max(20px,calc((100% - 1440px)/2));}header h1{font-size:26px;margin:0 0 6px}header p{margin:0;color:#d4d0e5}.wrap{max-width:1440px;margin:auto;padding:20px}.stats{display:grid;grid-template-columns:repeat(5,minmax(120px,1fr));gap:12px;margin-bottom:16px}.stat,.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px}.stat small{color:var(--muted)}.stat strong{display:block;font-size:25px;margin-top:4px}.toolbar{display:flex;flex-wrap:wrap;gap:9px;margin:12px 0}.toolbar input,.toolbar select,.toolbar button,.field{font:inherit;border:1px solid var(--line);border-radius:9px;padding:10px 12px;background:white;color:var(--ink)}.toolbar input{flex:1;min-width:230px}.toolbar button{cursor:pointer;font-weight:650}.primary{background:var(--purple)!important;color:#fff!important;border-color:var(--purple)!important}.hint{font-size:12px;color:var(--muted);margin:6px 0 14px}.tablewrap{overflow:auto;background:white;border:1px solid var(--line);border-radius:14px}table{border-collapse:collapse;width:100%;min-width:1080px}th,td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top}th{background:#faf9fd;color:#545066;font-size:12px;position:sticky;top:0;z-index:1}tbody tr:hover{background:#fbfaff}.num{color:var(--muted);font-variant-numeric:tabular-nums}.role{font-weight:700}.sub{color:var(--muted);font-size:12px;margin-top:3px}.pill{display:inline-block;border-radius:99px;padding:4px 8px;font-size:11px;font-weight:750;white-space:nowrap}.pill.applied{background:#e5efff;color:#214e9b}.pill.in_process{background:#e3f7ed;color:#087044}.pill.rejected{background:#ffe8e8;color:#a52323}.pill.to_apply{background:#eee9ff;color:#5936bc}.pill.verify{background:#fff0d9;color:#875000}.pill.watchlist{background:#edf0f3;color:#535c68}.pill.closed{background:#e9e9e9;color:#555}.statusselect{min-width:145px;padding:7px;border:1px solid var(--line);border-radius:8px;background:white}.check{width:17px;height:17px;accent-color:var(--purple);vertical-align:middle}.actions{display:flex;gap:6px}.mini{padding:6px 8px;border:1px solid var(--line);background:#fff;border-radius:7px;cursor:pointer}.foot{color:var(--muted);font-size:12px;margin:14px 2px}.empty{text-align:center;padding:35px;color:var(--muted)}.modal{position:fixed;inset:0;background:#16132677;display:none;align-items:center;justify-content:center;padding:18px;z-index:10}.modal.show{display:flex}.dialog{width:min(620px,100%);background:white;border-radius:16px;padding:20px;max-height:90vh;overflow:auto}.dialog h2{margin:0 0 14px}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.formgrid label{display:block;font-size:12px;color:var(--muted)}.formgrid input,.formgrid select,.formgrid textarea{display:block;width:100%;margin-top:5px;padding:9px;border:1px solid var(--line);border-radius:8px;font:inherit;color:var(--ink)}.formgrid textarea{min-height:85px}.span2{grid-column:span 2}.dialogfoot{display:flex;justify-content:space-between;gap:8px;margin-top:15px}.timeline{margin:0 0 16px;padding:13px 15px;border-radius:12px;background:#fff;border:1px solid var(--line)}.timeline b{color:var(--purple)}@media(max-width:760px){.stats{grid-template-columns:repeat(2,1fr)}.wrap{padding:12px}header{padding:22px 16px}.formgrid{grid-template-columns:1fr}.span2{grid-column:auto}}
+header{background:radial-gradient(ellipse at 86% 0%,#554080 0,transparent 36%),linear-gradient(125deg,#171525,#25203a);padding-top:30px;padding-bottom:24px}header h1{font-size:clamp(24px,4vw,32px);letter-spacing:-.04em}header p{max-width:760px;line-height:1.6}.storage-status{display:inline-flex;align-items:center;gap:8px;margin-top:16px;padding:7px 11px;border:1px solid #ffffff2b;border-radius:999px;background:#ffffff12;color:#e7e1fb;font-size:12px}.storage-status:before{content:"";width:8px;height:8px;border-radius:50%;background:#74e0a5;box-shadow:0 0 0 3px #74e0a522}.storage-status.offline:before{background:#ffcc72;box-shadow:0 0 0 3px #ffcc7222}.wrap{padding-top:24px}.stat,.panel,.tablewrap,.timeline{box-shadow:0 4px 16px #211b3510}.stat{transition:transform .16s ease,box-shadow .16s ease}.stat:hover{transform:translateY(-2px);box-shadow:0 8px 22px #211b3516}.stat strong{letter-spacing:-.04em}.toolbar button,.mini,.statusselect,.formgrid input,.formgrid select,.formgrid textarea{transition:border-color .15s ease,box-shadow .15s ease}.toolbar button:hover,.mini:hover{border-color:#b9a9ec}.toolbar button:focus-visible,.mini:focus-visible,.statusselect:focus-visible,.toolbar input:focus-visible,.formgrid input:focus-visible,.formgrid select:focus-visible,.formgrid textarea:focus-visible{outline:3px solid #6d45d833;outline-offset:1px}th{background:#f8f7fb}tbody tr:last-child td{border-bottom:0}.foot{line-height:1.7}@media(max-width:760px){header{padding-top:23px;padding-bottom:20px}.wrap{padding-top:14px}.stats{gap:9px}.stat{padding:12px}.stat strong{font-size:22px}}
+</style><style>.header-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:13px}.header-actions .storage-status{margin-top:0}.logout-btn{padding:7px 12px;border:1px solid #ffffff44;border-radius:9px;background:#ffffff12;color:white;font:inherit;font-size:12px;font-weight:650;cursor:pointer}.logout-btn:hover{background:#ffffff20}.foot a{color:var(--purple);text-decoration:none}.foot a:hover{text-decoration:underline}header{padding-left:clamp(16px,2vw,32px);padding-right:clamp(16px,2vw,32px)}.wrap{width:100%;max-width:none;padding-left:clamp(12px,2vw,32px);padding-right:clamp(12px,2vw,32px)}
+:root{--ink:#191a2b;--muted:#777b91;--purple:#6643d5;--line:#e8e9f1;--bg:#f4f5fa}body{background:radial-gradient(ellipse at 92% 0,#eeebff 0,transparent 30%),var(--bg);color:var(--ink)}header{background:radial-gradient(ellipse at 82% -15%,#7051c9 0,transparent 40%),linear-gradient(120deg,#171525,#26203b);padding-top:30px;padding-bottom:27px}header h1{font-size:clamp(25px,3vw,34px);letter-spacing:-.05em}header h1 span{font-weight:500;color:#d9d2f5}.wrap{padding-top:24px;padding-bottom:42px}.stats{grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;margin-bottom:20px}.stat{position:relative;overflow:hidden;min-width:0;padding:19px 20px 16px;border:1px solid #e8e8f0;border-radius:17px;background:linear-gradient(145deg,#fff 55%,#fbfaff);box-shadow:0 6px 20px #27203b0a;transition:transform .18s ease,box-shadow .18s ease}.stat:hover{transform:translateY(-3px);box-shadow:0 12px 28px #27203b14}.stat:after{position:absolute;inset:0 auto 0 0;width:3px;background:var(--stat-accent,#7555df);content:''}.stat-total{--stat-accent:#7152d8;--stat-tint:#eee9ff}.stat-sent{--stat-accent:#278c67;--stat-tint:#e6f5ee}.stat-progress{--stat-accent:#4381ca;--stat-tint:#e8f1fc}.stat-pending{--stat-accent:#d39435;--stat-tint:#fff3df}.stat-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:15px}.stat-icon{display:grid;place-items:center;width:37px;height:37px;border-radius:12px;background:var(--stat-tint);color:var(--stat-accent)}.stat-icon svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.stat-period{color:#989bad;font-size:9px;font-weight:800;letter-spacing:.11em}.stat-label{color:#676b80;font-size:12px;font-weight:650}.stat-value{margin-top:3px;color:#202034;font-size:clamp(27px,2.4vw,34px);font-weight:780;line-height:1.15;letter-spacing:-.055em;font-variant-numeric:tabular-nums}.stat-detail{min-height:18px;margin-top:5px;color:#8a8da0;font-size:11px}.stat-track{height:5px;margin-top:16px;overflow:hidden;border-radius:99px;background:#eeeff4}.stat-track span{display:block;height:100%;border-radius:inherit;background:var(--stat-accent);transition:width .3s ease}.stat-foot{display:flex;justify-content:space-between;gap:8px;margin-top:7px;color:#9295a6;font-size:10px}.stat-foot strong{color:var(--stat-accent);font-size:10px}.timeline,.panel,.tablewrap{border-color:#e8e9f1;border-radius:17px;box-shadow:0 6px 22px #27203b0a}.timeline{padding:16px 18px;line-height:1.65}.panel{padding:18px}.toolbar button,.mini,.statusselect{border-radius:10px}.toolbar button{transition:transform .16s ease,box-shadow .16s ease}.toolbar button:hover{transform:translateY(-1px);box-shadow:0 5px 12px #29204412}.tablewrap{overflow:auto}table{min-width:1200px}th{padding-top:13px;padding-bottom:13px}tbody tr{transition:background .12s ease}tbody tr:hover{background:#f8f7fd}.dialog{border:1px solid #e8e8f0;border-radius:20px;box-shadow:0 22px 65px #17152530}@media(max-width:980px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:520px){.stats{grid-template-columns:1fr;gap:10px}.stat{padding:16px 17px 14px}.stat-top{margin-bottom:10px}.stat-track{margin-top:12px}header h1 span{display:block}}
+.activity-panel{margin:0 0 18px;padding:18px 20px}.activity-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.activity-heading h2{margin:0;font-size:16px;letter-spacing:-.02em}.activity-heading .hint{margin:4px 0 0}.activity-actions{display:flex;align-items:center;gap:8px}.activity-badge{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;padding:0 7px;border-radius:99px;background:#fff0d9;color:#875000;font-size:11px;font-weight:800}.activity-list{display:grid;gap:0;max-height:340px;overflow:auto;margin:8px 0 0;padding:0;list-style:none}.activity-item{display:flex;gap:12px;padding:12px 4px;border-bottom:1px solid #eef0f5}.activity-item:last-child{border-bottom:0}.activity-dot{flex:0 0 9px;width:9px;height:9px;margin:6px 0 0;border-radius:50%;background:#7152d8;box-shadow:0 0 0 4px #eee9ff}.activity-copy{min-width:0;font-size:12px;color:#565a70}.activity-copy strong{color:#27253a}.activity-copy p{margin:3px 0;color:#333248;font-weight:650;overflow-wrap:anywhere}.activity-copy time{color:#8b8ea0;font-size:10px}.activity-empty{padding:18px 4px;color:#898c9d;font-size:12px}@media(max-width:520px){.activity-panel{padding:15px}.activity-heading{align-items:flex-start}.activity-actions{gap:5px}.activity-actions .mini{padding:6px 7px;font-size:11px}}</style><style>
+.admin-nav{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:6px;overflow-x:auto;padding:9px clamp(12px,2vw,32px);border-bottom:1px solid #e8e9f1;background:#ffffffed;backdrop-filter:blur(14px)}.admin-nav[hidden]{display:none}.admin-nav a{flex:0 0 auto;padding:8px 13px;border-radius:9px;color:#666a80;text-decoration:none;font-size:13px;font-weight:650;transition:background .15s,color .15s}.admin-nav a:hover,.admin-nav a:focus-visible,.admin-nav a[aria-current="page"]{background:#f0edfc;color:#5639b8;outline:none}.admin-nav a[aria-current="page"]{box-shadow:inset 0 -2px #6643d5}.admin-nav a:first-child{margin-left:0}.admin-nav a:last-child{margin-right:0}.dashboard-section,.activity-panel,.jobs-section{scroll-margin-top:74px}.admin-nav~main .dashboard-section{scroll-margin-top:74px}.compact-dashboard .timeline,.compact-dashboard .dashboard-note{display:none}.stats.compact{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:0 0 14px}.stats.compact .stat{display:flex;align-items:center;justify-content:space-between;gap:12px;min-width:0;padding:11px 14px;border-radius:12px;box-shadow:0 2px 9px #27203b08}.stats.compact .stat:after{width:3px}.stats.compact .stat-top,.stats.compact .stat-detail,.stats.compact .stat-track,.stats.compact .stat-foot{display:none}.stats.compact .stat-label{font-size:11px}.stats.compact .stat-value{margin:0;font-size:20px}.stats.compact .stat:hover{transform:none;box-shadow:0 3px 12px #27203b12}@media(max-width:760px){.admin-nav{gap:2px;padding:8px 10px}.admin-nav a{padding:8px 10px;font-size:12px}.stats.compact{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.stats.compact .stat{padding:10px 12px}}
+</style></head><body><header><h1>HelsTJ <span>Job Tracker</span></h1><p>Ringkasan pencarian kerja dan progres lamaranmu.</p><div class="header-actions"><div id="storageStatus" class="storage-status" role="status" aria-live="polite">Menyambungkan ke penyimpanan…</div><span id="currentAccount" class="logout-btn" hidden></span><button id="logoutBtn" class="logout-btn" type="button">Keluar</button></div></header><nav id="adminNav" class="admin-nav" aria-label="Navigasi admin" hidden><a href="#dashboardSection" data-admin-page="dashboardSection">Dashboard</a><a href="#adminPanel" data-admin-page="adminPanel">Pengguna</a><a href="#activityPanel" data-admin-page="activityPanel">Aktivitas</a><a href="#jobsSection" data-admin-page="jobsSection">Lowongan</a></nav><main class="wrap"><section id="dashboardSection" class="dashboard-section"><section class="stats" id="stats"></section></section><section id="activityPanel" class="panel activity-panel" hidden><div class="activity-heading"><div><h2>Aktivitas terbaru</h2><p class="hint">Riwayat perubahan tracker dan akun pengguna.</p></div><div class="activity-actions"><span id="activityBadge" class="activity-badge" hidden></span><button id="markActivityRead" class="mini" type="button">Tandai dibaca</button></div></div><p id="activityStatus" class="hint" role="status" aria-live="polite"></p><ol id="activityList" class="activity-list"></ol></section><section id="adminPanel" class="panel" hidden><h2>Kelola akun pengguna</h2><p class="hint">Akun non-admin dapat melihat dan menambah lamaran; hanya admin yang dapat mengedit atau menghapus.</p><form id="addUserForm" class="toolbar"><input id="newUsername" placeholder="Username (3–32 karakter)" required minlength="3" maxlength="32" pattern="[A-Za-z0-9._\-]{3,32}"><input id="newUserPassword" type="password" placeholder="Kata sandi awal (min. 12 karakter)" required minlength="12" maxlength="256" autocomplete="new-password"><button class="primary" type="submit">Tambah akun</button></form><p id="userAdminStatus" class="hint" role="status" aria-live="polite"></p><div id="userList"></div></section><section id="jobsSection" class="jobs-section"><div class="panel jobs-control-panel"><div class="toolbar-cluster filter-cluster"><div class="search-wrap"><svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input id="search" placeholder="Cari perusahaan, posisi, kategori, catatan…"><button id="clearSearchBtn" class="clear-search-btn" type="button" aria-label="Hapus pencarian" hidden>×</button></div><div class="filter-group"><select id="statusFilter" aria-label="Filter status"><option value="all">Semua status</option><option value="applied">Sudah dilamar</option><option value="in_process">Sedang diproses</option><option value="rejected">Ditolak / tidak lolos</option><option value="to_apply">Akan dilamar</option><option value="verify">Perlu verifikasi</option><option value="watchlist">Pantauan</option><option value="closed">Tutup / batal</option></select><select id="categoryFilter" aria-label="Filter kategori"><option value="all">Semua kategori</option></select><select id="creatorFilter" aria-label="Filter penambah"><option value="all">Semua penambah</option></select><select id="sort" aria-label="Urutkan lowongan"><option value="priority">Urutan tracker</option><option value="deadline">Tenggat terdekat (teks)</option><option value="company">Nama perusahaan A–Z</option></select><button id="resetFiltersBtn" class="mini reset-btn" type="button" title="Reset semua filter" hidden>Reset filter</button></div></div><div class="toolbar-cluster action-cluster"><div class="action-buttons-group"><button class="primary" id="addBtn" type="button"><svg viewBox="0 0 24 24" class="btn-svg" aria-hidden="true"><path d="M12 5v14m-7-7h14"/></svg><span>+ Tambah lamaran</span></button><button class="action-btn import-trigger-btn" id="importJobsBtn" type="button"><svg viewBox="0 0 24 24" class="btn-svg" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg><span>Impor Lowongan</span><span class="badge-pill">Excel / CSV</span></button><input type="file" id="importJobsFileInput" accept=".xlsx,.xls,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,text/csv" hidden></div><div class="export-buttons-group"><button id="xlsxBtn" class="export-btn" type="button"><svg viewBox="0 0 24 24" class="btn-svg" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="17"/><line x1="16" y1="13" x2="8" y2="17"/></svg><span>Unduh Excel (.xlsx)</span></button><button id="csvBtn" class="export-btn" type="button"><svg viewBox="0 0 24 24" class="btn-svg" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span>Ekspor CSV</span></button><button id="exportBtn" class="export-btn" type="button"><svg viewBox="0 0 24 24" class="btn-svg" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><span>Ekspor JSON</span></button></div><div class="result-badge-wrap"><span id="resultCountBadge" class="result-count-badge">Memuat data…</span></div></div><div class="toolbar" id="googleSheetsPanel" hidden style="display:none"><input id="sheetId" placeholder="Tempel URL atau ID Google Sheets" aria-label="URL atau ID Google Sheets"><button id="googleSheetsBtn">Unggah ke Google Sheets</button><span id="sheetsStatus" class="hint" role="status" aria-live="polite">Login Google diminta saat mengunggah.</span></div><div class="hint">Checklist menandai lamaran yang sudah dikirim. Admin dapat mengubah status dan detail lewat tombol Edit. Data otomatis disimpan ke server ini; Ekspor JSON bisa dipakai sebagai cadangan.</div></div><div class="tablewrap"><table><thead><tr><th>✓</th><th>#</th><th>Perusahaan / Posisi</th><th>Ditambahkan</th><th>Ditambahkan oleh</th><th>Sektor</th><th>Pemerintah / Swasta</th><th>Status</th><th>Tenggat</th><th>Sumber</th><th>URL sumber</th><th>URL lamaran</th><th>Catatan / aksi</th></tr></thead><tbody id="tbody"></tbody></table><div id="empty" class="empty" hidden><p>Tidak ada hasil yang cocok.</p><button class="mini" id="emptyResetBtn" type="button">Reset filter</button></div></div></section><p class="foot">Versi awal · 100 target tracker · Terakhir dirapikan 27 Oktober 2026. “Pantauan” bukan berarti lowongan sedang dibuka. Verifikasi tenggat di portal resmi sebelum melamar.<br>© 2026 Helmy Akrim · <a href="https://github.com/myhell2405" target="_blank" rel="noopener noreferrer">GitHub</a> · <a href="mailto:helmyakrim@gmail.com">helmyakrim@gmail.com</a> · <a href="https://hlmykrm.vercel.app" target="_blank" rel="noopener noreferrer">hlmykrm.vercel.app</a></p></main>
+<div class="modal" id="modal"><div class="dialog"><h2 id="modalTitle">Edit lamaran</h2><div class="formgrid"><label>Perusahaan<input id="fCompany"></label><label>Posisi<input id="fRole"></label><label>Sektor pekerjaan<input id="fSector" placeholder="Contoh: keuangan, teknologi"></label><label>Pemerintah / swasta<select id="fEmployerType"><option value="">Belum diketahui</option><option value="government">Pemerintah</option><option value="private">Swasta</option></select></label><label>Status<select id="fStatus"><option value="to_apply">Akan dilamar</option><option value="applied">Sudah dilamar</option><option value="in_process">Sedang diproses</option><option value="rejected">Ditolak / tidak lolos</option><option value="verify">Perlu verifikasi</option><option value="watchlist">Pantauan</option><option value="closed">Tutup / batal</option></select></label><label>Tanggal lamaran<input id="fDate" type="date"></label><label>Tenggat<input id="fDeadline" placeholder="Contoh: 10 Nov 2026"></label><label>Nama sumber<input id="fSource" placeholder="Contoh: LinkedIn, portal karier"></label><label>URL sumber<input id="fSourceUrl" type="url" placeholder="https://example.com/"></label><label>URL lamaran<input id="fApplicationUrl" type="url" placeholder="https://example.com/"></label><label class="span2">Catatan<textarea id="fNote"></textarea></label></div><div class="dialogfoot"><button class="mini" id="deleteBtn">Hapus entri</button><div><button class="mini" id="cancelBtn">Batal</button> <button class="primary mini" id="saveBtn">Simpan</button></div></div></div></div><div class="modal" id="importModal" role="dialog" aria-modal="true" aria-labelledby="importModalTitle"><div class="dialog import-dialog"><div class="import-header"><div><h2 id="importModalTitle">Impor Lowongan Pekerjaan</h2><p class="dialog-subtitle">Tambahkan banyak lowongan dari file Excel (.xlsx, .xls) atau CSV (.csv).</p></div><button class="close-btn" id="closeImportModalBtn" type="button" aria-label="Tutup modal">×</button></div><div id="importUploadStep"><div class="dropzone" id="importDropzone" tabindex="0" role="button" aria-label="Area unggah file lowongan"><div class="dropzone-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div><p class="dropzone-primary"><strong>Tarik & letakkan file di sini</strong> atau klik untuk memilih</p><p class="dropzone-secondary">Mendukung file <strong>.xlsx</strong>, <strong>.xls</strong>, dan <strong>.csv</strong> (Maksimal 2MB)</p><div class="format-tags"><span class="format-tag">.XLSX</span><span class="format-tag">.XLS</span><span class="format-tag">.CSV</span></div></div><div class="import-info-box"><div class="import-info-heading"><svg viewBox="0 0 24 24" class="info-svg" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><strong>Format Kolom yang Dikenali:</strong></div><p class="info-text">Kolom wajib: <code>Perusahaan</code> dan <code>Posisi</code>. Kolom opsional: <code>Kategori</code>, <code>Status</code>, <code>Tenggat</code>, <code>Sumber</code>, <code>URL Sumber</code>, <code>URL Lamaran</code>, <code>Catatan</code>, <code>Sektor</code>, <code>Pemerintah/Swasta</code>.</p><div class="template-actions"><span>Format template siap pakai:</span><button type="button" id="downloadCsvTemplateBtn" class="text-btn">Unduh Template CSV</button><span class="dot-sep">•</span><button type="button" id="downloadXlsxTemplateBtn" class="text-btn">Unduh Template Excel</button></div></div></div><div id="importPreviewStep" hidden><div class="preview-summary-card"><div class="preview-file-info"><svg viewBox="0 0 24 24" class="preview-file-icon" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><div><strong id="previewFileName">data.xlsx</strong><span id="previewFileSize" class="preview-filesize">0 KB</span></div></div><div class="preview-counts"><span id="previewValidCount" class="badge-success">0 lowongan valid</span><span id="previewSkippedNotice" class="badge-warning" hidden>0 diabaikan</span></div></div><div id="importRoleNotice" class="role-notice-banner" hidden><svg viewBox="0 0 24 24" class="notice-icon"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>Akun pengguna akan menambahkan lowongan dengan status awal <strong>Akan dilamar</strong>.</span></div><div class="preview-table-container"><table class="preview-table"><thead><tr><th>#</th><th>Perusahaan</th><th>Posisi</th><th>Status</th><th>Kategori</th><th>Tenggat</th><th>Sumber</th></tr></thead><tbody id="importPreviewTbody"></tbody></table></div><p id="previewTruncatedHint" class="preview-hint"></p></div><div id="importLoadingState" class="import-loading" hidden><div class="spinner"></div><p id="importLoadingText">Menganalisis file lowongan…</p></div><div class="dialogfoot import-foot"><button class="mini" id="changeImportFileBtn" type="button" hidden>Pilih file lain</button><div class="dialogfoot-actions"><button class="mini" id="cancelImportModalBtn" type="button">Batal</button><button class="primary mini" id="confirmImportBtn" type="button" disabled>Impor Lowongan</button></div></div></div></div><div id="toastContainer" class="toast-container" aria-live="polite"></div><script src="https://accounts.google.com/gsi/client" async defer></script>
+<script>
+const seed = [
+  {
+    "id": 1,
+    "company": "BFI Finance",
+    "role": "HCBP Data Analyst Internship",
+    "category": "Data Analyst",
+    "status": "to_apply",
+    "deadline": "5 Nov 2026",
+    "source": "Kalibrr",
+    "note": "Prioritas lamaran; verifikasi status dan syarat.",
+    "appliedDate": "2026-10-27",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 2,
+    "company": "Astro Technologies",
+    "role": "Data Analyst",
+    "category": "Data Analyst",
+    "status": "to_apply",
+    "deadline": "9 Nov 2026",
+    "source": "Kalibrr",
+    "note": "Verifikasi listing sebelum melamar.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 3,
+    "company": "Metrodata Electronics",
+    "role": "Business Analyst",
+    "category": "Business Analyst",
+    "status": "to_apply",
+    "deadline": "27 Nov 2026",
+    "source": "Kalibrr",
+    "note": "Fresh graduate tercantum.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 4,
+    "company": "Metrodata Electronics",
+    "role": "Data Engineer",
+    "category": "Data Engineer",
+    "status": "applied",
+    "deadline": "16 Nov 2026",
+    "source": "Kalibrr",
+    "note": "Sudah dilamar; pantau status.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 5,
+    "company": "Accelist",
+    "role": "IT Business Analyst Support",
+    "category": "Business Analyst",
+    "status": "to_apply",
+    "deadline": "21 Nov 2026",
+    "source": "Career site",
+    "note": "Cek syarat terbaru.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 6,
+    "company": "Accelist",
+    "role": "Junior Full Stack Developer",
+    "category": "Software Developer",
+    "status": "to_apply",
+    "deadline": "22 Nov 2026",
+    "source": "Career site",
+    "note": "Cek syarat terbaru.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 7,
+    "company": "Danone",
+    "role": "STAR & GREAT Graduate Program 2027",
+    "category": "Graduate Program",
+    "status": "to_apply",
+    "deadline": "Belum tercantum",
+    "source": "Official career site",
+    "note": "Posting 23 Okt; cek kelayakan dan tenggat.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 8,
+    "company": "Kompas Gramedia",
+    "role": "Big Data Analyst",
+    "category": "Data Analyst",
+    "status": "verify",
+    "deadline": "29 Nov 2026",
+    "source": "Kalibrr",
+    "note": "Syarat pengalaman mungkin jadi kendala.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 9,
+    "company": "SANF",
+    "role": "Risk Management Information System Analyst",
+    "category": "Data/Systems Analyst",
+    "status": "verify",
+    "deadline": "29 Nov 2026",
+    "source": "Kalibrr",
+    "note": "Cek pengalaman/predictive modelling.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 10,
+    "company": "Allianz",
+    "role": "Expense Management Internship",
+    "category": "Business/Data Support",
+    "status": "verify",
+    "deadline": "7 Nov 2026",
+    "source": "Kalibrr",
+    "note": "Periksa status listing.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 11,
+    "company": "KPEI",
+    "role": "Application Administrator — Sistem Bisnis Pasar Uang/Valas",
+    "category": "IT/Application Support",
+    "status": "verify",
+    "deadline": "11 Nov 2026",
+    "source": "Kalibrr",
+    "note": "Verifikasi syarat dan status.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 12,
+    "company": "KPEI",
+    "role": "Staf Pengembangan Sistem Bisnis Pasar Modal",
+    "category": "Systems Analyst",
+    "status": "verify",
+    "deadline": "30 Nov 2026",
+    "source": "Kalibrr",
+    "note": "Verifikasi syarat dan status.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 13,
+    "company": "Adi Data Informatika",
+    "role": "Junior Tester Automation",
+    "category": "QA Tester",
+    "status": "applied",
+    "deadline": "Listing perlu dicek",
+    "source": "Kalibrr",
+    "note": "Sudah dilamar; Katalon disebut sebagai kebutuhan.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 14,
+    "company": "Adi Data Informatika",
+    "role": "Applications Developer",
+    "category": "Software Developer",
+    "status": "verify",
+    "deadline": "30 Okt 2026",
+    "source": "Kalibrr",
+    "note": "Cek status sebelum melamar.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 15,
+    "company": "Adira Finance",
+    "role": "Business Analyst Trainee Program",
+    "category": "Business Analyst",
+    "status": "verify",
+    "deadline": "Belum terkonfirmasi",
+    "source": "LinkedIn",
+    "note": "Listing ditemukan; cek portal resmi.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 16,
+    "company": "Baskit Technology",
+    "role": "Business Data Analyst",
+    "category": "Data Analyst",
+    "status": "verify",
+    "deadline": "Belum terkonfirmasi",
+    "source": "Dealls",
+    "note": "Fresh graduate tercantum di listing; cek masih aktif.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 17,
+    "company": "PT Pangan Lestari",
+    "role": "Data Analyst Staff",
+    "category": "Data Analyst",
+    "status": "verify",
+    "deadline": "Belum terkonfirmasi",
+    "source": "JobStreet",
+    "note": "Cek syarat dan lokasi.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 18,
+    "company": "Depoguna Bangunan Online",
+    "role": "Business Analyst",
+    "category": "Business Analyst",
+    "status": "verify",
+    "deadline": "Belum terkonfirmasi",
+    "source": "JobStreet",
+    "note": "Cek syarat SDLC/backlog.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 19,
+    "company": "Mitra Mandiri Informatika",
+    "role": "Business Analyst",
+    "category": "Business Analyst",
+    "status": "verify",
+    "deadline": "Belum terkonfirmasi",
+    "source": "JobStreet",
+    "note": "Cek pengalaman yang diminta.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 20,
+    "company": "DHL Supply Chain Indonesia",
+    "role": "Business Analyst",
+    "category": "Business Analyst",
+    "status": "verify",
+    "deadline": "Belum terkonfirmasi",
+    "source": "JobStreet",
+    "note": "Tangerang; cek level.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 21,
+    "company": "Radana Bhaskara Finance",
+    "role": "IT Business Analyst",
+    "category": "Business Analyst",
+    "status": "verify",
+    "deadline": "Belum terkonfirmasi",
+    "source": "JobStreet",
+    "note": "Cek kualifikasi S1 SI.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 22,
+    "company": "Bangunsukses Niagatama Nusantara",
+    "role": "Data Analyst",
+    "category": "Data Analyst",
+    "status": "verify",
+    "deadline": "Belum terkonfirmasi",
+    "source": "JobStreet",
+    "note": "Cek status dan syarat.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 23,
+    "company": "Permodalan Nasional Madani",
+    "role": "Business Development & Research Analyst",
+    "category": "Business Analyst",
+    "status": "verify",
+    "deadline": "Belum terkonfirmasi",
+    "source": "JobStreet",
+    "note": "Jakarta Selatan; cek kualifikasi.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 24,
+    "company": "Margacipta Wirasentosa",
+    "role": "Data Analyst Sales",
+    "category": "Data Analyst",
+    "status": "verify",
+    "deadline": "Belum terkonfirmasi",
+    "source": "JobStreet",
+    "note": "Cikupa; cek status.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 25,
+    "company": "Boga Group",
+    "role": "Financial Data Analytics Specialist",
+    "category": "Data Analyst",
+    "status": "verify",
+    "deadline": "Belum terkonfirmasi",
+    "source": "JobStreet",
+    "note": "Cek syarat teknis dan pengalaman.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 26,
+    "company": "BCA",
+    "role": "IT Infrastructure Engineer",
+    "category": "Lainnya",
+    "status": "rejected",
+    "deadline": "6 Okt–31 Des 2026",
+    "source": "BCA Karir",
+    "note": "Dilamar 26 Okt; jangan kirim lamaran BCA lain selama portal membatasi.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 27,
+    "company": "Asuransi Central Asia (ACA)",
+    "role": "IT Business Analyst",
+    "category": "Business Analyst",
+    "status": "applied",
+    "deadline": "Listing deadline 26 Okt",
+    "source": "ACA / portal lamaran",
+    "note": "Sudah dilamar; pantau hasil.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 28,
+    "company": "PT Patria Menara Abadi",
+    "role": "Admin Procurement",
+    "category": "Procurement/Admin",
+    "status": "applied",
+    "deadline": "7 Nov (listing sebelumnya)",
+    "source": "Kalibrr",
+    "note": "Sudah dilamar; peluang lebih rendah karena syarat pengalaman.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 29,
+    "company": "IDX",
+    "role": "Securities Data and Trading Parameter Management (Outsource, PSPP Project)",
+    "category": "Data/Capital Market Ops",
+    "status": "applied",
+    "deadline": "Tidak diketahui",
+    "source": "Email konfirmasi",
+    "note": "Email konfirmasi diterima; bukan berarti lolos.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 30,
+    "company": "Bank Indonesia",
+    "role": "PCPM BI 41",
+    "category": "Graduate Program",
+    "status": "rejected",
+    "deadline": "Seleksi teknis; gagal (Okt 2026)",
+    "source": "PCPM BI",
+    "note": "Tidak lolos setelah tahap Seleksi Pengetahuan Teknis.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 31,
+    "company": "Bank Mandiri Taspen",
+    "role": "ODP Taspen",
+    "category": "ODP/Graduate Program",
+    "status": "rejected",
+    "deadline": "Deadline sebelumnya 31 Agu",
+    "source": "Mandiri Taspen",
+    "note": "Status sebelumnya: tidak lolos.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 32,
+    "company": "MagangHub",
+    "role": "Database Engineer — Balai Layanan Penghubung Identitas Digital, Depok",
+    "category": "Database Engineer",
+    "status": "rejected",
+    "deadline": "Batch 2, Sep 2026",
+    "source": "MagangHub",
+    "note": "Status batch sebelumnya merah/tidak lolos.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 33,
+    "company": "MagangHub",
+    "role": "Data Analyst — Global Scholarship Center",
+    "category": "Data Analyst",
+    "status": "rejected",
+    "deadline": "Batch 2, Sep 2026",
+    "source": "MagangHub",
+    "note": "Status batch sebelumnya merah/tidak lolos.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 34,
+    "company": "PT Metrodata Electronics",
+    "role": "Technical Consultant HCM Module",
+    "category": "IT Consultant",
+    "status": "to_apply",
+    "deadline": "9 Nov 2026",
+    "source": "Kalibrr",
+    "note": "Fresh graduate tercantum; SQL/API/system support.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 35,
+    "company": "PT Metrodata Electronics",
+    "role": "Functional Consultant ERP",
+    "category": "ERP/Systems Analyst",
+    "status": "to_apply",
+    "deadline": "4 Des 2026",
+    "source": "Kalibrr",
+    "note": "Fresh graduate; hybrid; cocok SI jika tertarik ERP.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 36,
+    "company": "BCA",
+    "role": "Management Development Program (MDP)",
+    "category": "Graduate Program",
+    "status": "watchlist",
+    "deadline": "Belum dipastikan",
+    "source": "BCA Karir",
+    "note": "Tahan selama lamaran BCA aktif dan portal membatasi aplikasi.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 37,
+    "company": "BCA",
+    "role": "Wealth Management Program (WMP)",
+    "category": "Graduate Program",
+    "status": "watchlist",
+    "deadline": "Belum dipastikan",
+    "source": "BCA Karir",
+    "note": "Tahan dulu karena aplikasi BCA aktif.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 38,
+    "company": "BCA",
+    "role": "Relationship Officer Program",
+    "category": "Banking Program",
+    "status": "watchlist",
+    "deadline": "Belum dipastikan",
+    "source": "BCA Karir",
+    "note": "Cek ulang setelah status lamaran BCA jelas.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 39,
+    "company": "BCA",
+    "role": "Credit Analyst Program",
+    "category": "Banking/Analyst",
+    "status": "watchlist",
+    "deadline": "Belum dipastikan",
+    "source": "BCA Karir",
+    "note": "Cek ulang setelah status lamaran BCA jelas.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 40,
+    "company": "Bank Mandiri",
+    "role": "ODP IT",
+    "category": "ODP/IT",
+    "status": "verify",
+    "deadline": "Portal resmi sebelumnya closed",
+    "source": "Mandiri Career",
+    "note": "Pantau pembukaan berikutnya.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 41,
+    "company": "Bank Mandiri",
+    "role": "ODP Risk Management",
+    "category": "ODP/Risk",
+    "status": "watchlist",
+    "deadline": "Belum diumumkan",
+    "source": "Mandiri Career",
+    "note": "Pantauan siklus berikutnya.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 42,
+    "company": "Bank Mandiri",
+    "role": "ODP Business Enablers",
+    "category": "ODP/Business",
+    "status": "watchlist",
+    "deadline": "Belum diumumkan",
+    "source": "Mandiri Career",
+    "note": "Pantauan siklus berikutnya.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 43,
+    "company": "Bank Mandiri",
+    "role": "ODP General/Wholesale Banking",
+    "category": "ODP/Banking",
+    "status": "watchlist",
+    "deadline": "Belum diumumkan",
+    "source": "Mandiri Career",
+    "note": "Pantauan siklus berikutnya.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 44,
+    "company": "Bank Mandiri",
+    "role": "Banking Staff",
+    "category": "Banking Staff",
+    "status": "watchlist",
+    "deadline": "Per posisi",
+    "source": "Mandiri Career",
+    "note": "Cari lowongan spesifik.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 45,
+    "company": "BNI",
+    "role": "ODP Data Analytics",
+    "category": "ODP/Data",
+    "status": "verify",
+    "deadline": "Aggregator menyebut 14 Nov",
+    "source": "BNI Recruitment",
+    "note": "Belum terkonfirmasi di portal resmi.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 46,
+    "company": "BNI",
+    "role": "ODP IT",
+    "category": "ODP/IT",
+    "status": "watchlist",
+    "deadline": "Belum diumumkan",
+    "source": "BNI Recruitment",
+    "note": "Pantauan.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 47,
+    "company": "BNI",
+    "role": "ODP General Banking",
+    "category": "ODP/Banking",
+    "status": "watchlist",
+    "deadline": "Belum diumumkan",
+    "source": "BNI Recruitment",
+    "note": "Pantauan.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 48,
+    "company": "BNI",
+    "role": "ODP Retail Banking",
+    "category": "ODP/Banking",
+    "status": "watchlist",
+    "deadline": "Belum diumumkan",
+    "source": "BNI Recruitment",
+    "note": "Pantauan.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 49,
+    "company": "BRI",
+    "role": "BRILiaN Future Leader Program",
+    "category": "Graduate Program",
+    "status": "watchlist",
+    "deadline": "Siklus berikutnya",
+    "source": "BRI Career",
+    "note": "Pantauan.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 50,
+    "company": "BRI",
+    "role": "IT/Digital Banking",
+    "category": "IT/Data",
+    "status": "watchlist",
+    "deadline": "Per posisi",
+    "source": "BRI Career",
+    "note": "Pantauan lowongan spesifik.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 51,
+    "company": "BRI",
+    "role": "BRILiaN Banking Officer Program",
+    "category": "Banking Program",
+    "status": "watchlist",
+    "deadline": "Per posisi",
+    "source": "BRI Career",
+    "note": "Cek syarat.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 52,
+    "company": "Bank Syariah Indonesia",
+    "role": "ODP",
+    "category": "ODP/Graduate Program",
+    "status": "watchlist",
+    "deadline": "Siklus berikutnya",
+    "source": "BSI Career",
+    "note": "Pantauan.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 53,
+    "company": "Bank Syariah Indonesia",
+    "role": "IT/Digital Banking",
+    "category": "IT/Data",
+    "status": "watchlist",
+    "deadline": "Per posisi",
+    "source": "BSI Career",
+    "note": "Pantauan.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 54,
+    "company": "BTN",
+    "role": "ODP/Graduate Trainee",
+    "category": "Graduate Program",
+    "status": "watchlist",
+    "deadline": "Siklus berikutnya",
+    "source": "BTN Career",
+    "note": "Pantauan.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 55,
+    "company": "BTN",
+    "role": "IT/Digital Banking",
+    "category": "IT/Data",
+    "status": "watchlist",
+    "deadline": "Per posisi",
+    "source": "BTN Career",
+    "note": "Pantauan.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 56,
+    "company": "Bank Danamon",
+    "role": "Bankers Trainee",
+    "category": "Graduate Program",
+    "status": "verify",
+    "deadline": "Periksa syarat usia",
+    "source": "Danamon Career",
+    "note": "Program sebelumnya berpotensi tidak cocok; cek syarat terbaru.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 57,
+    "company": "Bank Danamon",
+    "role": "Fresh Graduate Program",
+    "category": "Graduate Program",
+    "status": "watchlist",
+    "deadline": "Belum diumumkan",
+    "source": "Danamon Career",
+    "note": "Pantauan.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 58,
+    "company": "CIMB Niaga",
+    "role": "Graduate Talent",
+    "category": "Graduate Program",
+    "status": "watchlist",
+    "deadline": "Belum diumumkan",
+    "source": "CIMB Career",
+    "note": "Pantauan.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 59,
+    "company": "OCBC Indonesia",
+    "role": "Graduate/Trainee",
+    "category": "Graduate Program",
+    "status": "watchlist",
+    "deadline": "Belum diumumkan",
+    "source": "OCBC Career",
+    "note": "Pantauan.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 60,
+    "company": "DBS Indonesia",
+    "role": "Graduate/Trainee",
+    "category": "Graduate Program",
+    "status": "watchlist",
+    "deadline": "Belum diumumkan",
+    "source": "DBS Careers",
+    "note": "Pantauan.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 61,
+    "company": "Mandiri Tunas Finance",
+    "role": "Management Trainee",
+    "category": "Graduate Program",
+    "status": "watchlist",
+    "deadline": "Belum diumumkan",
+    "source": "MTF Career",
+    "note": "Pantauan.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 62,
+    "company": "Adira Finance",
+    "role": "Management Trainee",
+    "category": "Graduate Program",
+    "status": "watchlist",
+    "deadline": "Belum diumumkan",
+    "source": "Adira Career",
+    "note": "Pantauan; berbeda dari Business Analyst Trainee No. 15.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 63,
+    "company": "BFI Finance",
+    "role": "Graduate/Management Trainee",
+    "category": "Graduate Program",
+    "status": "watchlist",
+    "deadline": "Belum diumumkan",
+    "source": "BFI Careers",
+    "note": "Pantauan.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 64,
+    "company": "Pegadaian",
+    "role": "Graduate/Management Trainee",
+    "category": "Graduate Program",
+    "status": "watchlist",
+    "deadline": "Belum diumumkan",
+    "source": "Pegadaian Career",
+    "note": "Pantauan.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 65,
+    "company": "Unilever",
+    "role": "UPLIFT apprenticeship",
+    "category": "Apprenticeship",
+    "status": "watchlist",
+    "deadline": "Intake Feb; aplikasi buka Des",
+    "source": "Unilever Careers",
+    "note": "Pantau fungsi digital/business.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 66,
+    "company": "Astro Technologies",
+    "role": "Data Platform Engineer",
+    "category": "Data Engineer",
+    "status": "verify",
+    "deadline": "Perlu cek listing",
+    "source": "Kalibrr",
+    "note": "Periksa persyaratan teknis.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 67,
+    "company": "Metrodata",
+    "role": "Software Developer",
+    "category": "Software Developer",
+    "status": "watchlist",
+    "deadline": "Per posisi",
+    "source": "Metrodata/Kalibrr",
+    "note": "Pantauan lowongan junior.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 68,
+    "company": "Kompas Gramedia",
+    "role": "Data Analyst",
+    "category": "Data Analyst",
+    "status": "watchlist",
+    "deadline": "Per posisi",
+    "source": "KG Career",
+    "note": "Cari posisi junior.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 69,
+    "company": "Haquhara",
+    "role": "Data Analyst",
+    "category": "Data Analyst",
+    "status": "verify",
+    "deadline": "Perlu cek listing",
+    "source": "Haquhara Careers",
+    "note": "Verifikasi status resmi.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 70,
+    "company": "Sunthi Sepuri",
+    "role": "Junior Programmer/Odoo",
+    "category": "Software/ERP",
+    "status": "verify",
+    "deadline": "Perlu cek listing",
+    "source": "Portal karier",
+    "note": "Cek syarat Odoo dan status.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 71,
+    "company": "KPN Corp",
+    "role": "Software Engineer (AI)",
+    "category": "Software/AI",
+    "status": "verify",
+    "deadline": "Perlu cek listing",
+    "source": "KPN Careers",
+    "note": "Cek persyaratan teknis.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 72,
+    "company": "Arsari Group",
+    "role": "Data Processing Analyst",
+    "category": "Data Analyst",
+    "status": "verify",
+    "deadline": "Perlu cek listing",
+    "source": "Arsari Careers",
+    "note": "Verifikasi status.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 73,
+    "company": "Triputra Group",
+    "role": "Odoo Developer",
+    "category": "ERP/Software",
+    "status": "verify",
+    "deadline": "Perlu cek listing",
+    "source": "Triputra Careers",
+    "note": "Cek syarat pengalaman.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 74,
+    "company": "Adi Data Informatika",
+    "role": "Database Administrator",
+    "category": "Database",
+    "status": "verify",
+    "deadline": "Perlu cek listing",
+    "source": "Kalibrr",
+    "note": "Cek level pengalaman.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 75,
+    "company": "Gojek/GoTo",
+    "role": "Data Analyst/Data Engineer",
+    "category": "Data",
+    "status": "watchlist",
+    "deadline": "Per posisi",
+    "source": "GoTo Careers",
+    "note": "Cari posisi junior.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 76,
+    "company": "Grab Indonesia",
+    "role": "Data/Business Analyst",
+    "category": "Data/Business",
+    "status": "watchlist",
+    "deadline": "Per posisi",
+    "source": "Grab Careers",
+    "note": "Pantauan.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 77,
+    "company": "Shopee Indonesia",
+    "role": "Data/BI Analyst",
+    "category": "Data/BI",
+    "status": "watchlist",
+    "deadline": "Per posisi",
+    "source": "Shopee Careers",
+    "note": "Pantauan.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 78,
+    "company": "Tokopedia",
+    "role": "Software/Data Analyst",
+    "category": "Software/Data",
+    "status": "watchlist",
+    "deadline": "Per posisi",
+    "source": "Career portal",
+    "note": "Pantauan posisi yang tersedia.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 79,
+    "company": "Traveloka",
+    "role": "Data/Product Analyst",
+    "category": "Data/Product",
+    "status": "watchlist",
+    "deadline": "Per posisi",
+    "source": "Traveloka Careers",
+    "note": "Pantauan.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 80,
+    "company": "Tiket.com",
+    "role": "Data/Product Analyst",
+    "category": "Data/Product",
+    "status": "watchlist",
+    "deadline": "Per posisi",
+    "source": "Tiket.com Careers",
+    "note": "Pantauan.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 81,
+    "company": "Telkom Indonesia",
+    "role": "IT/Digital",
+    "category": "IT/Data",
+    "status": "watchlist",
+    "deadline": "Per posisi",
+    "source": "Telkom Careers",
+    "note": "Pantauan.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 82,
+    "company": "Telkomsel",
+    "role": "IT/Data",
+    "category": "IT/Data",
+    "status": "watchlist",
+    "deadline": "Per posisi",
+    "source": "Telkomsel Careers",
+    "note": "Pantauan.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 83,
+    "company": "Indosat Ooredoo Hutchison",
+    "role": "IT/Data",
+    "category": "IT/Data",
+    "status": "watchlist",
+    "deadline": "Per posisi",
+    "source": "Indosat Careers",
+    "note": "Pantauan.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 84,
+    "company": "XLSMART",
+    "role": "IT/Data",
+    "category": "IT/Data",
+    "status": "watchlist",
+    "deadline": "Per posisi",
+    "source": "XLSMART Careers",
+    "note": "Pantauan.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 85,
+    "company": "Astra International",
+    "role": "IT/Data Analyst",
+    "category": "IT/Data",
+    "status": "watchlist",
+    "deadline": "Per posisi",
+    "source": "Astra Careers",
+    "note": "Pantauan.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 86,
+    "company": "DCI Indonesia",
+    "role": "IT Infrastructure/Data Center",
+    "category": "Infrastructure",
+    "status": "watchlist",
+    "deadline": "Per posisi",
+    "source": "DCI Careers",
+    "note": "Fokus junior; beberapa role minta pengalaman khusus.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 87,
+    "company": "TITANICOM TECH",
+    "role": "Data Center IT Engineer",
+    "category": "Infrastructure",
+    "status": "verify",
+    "deadline": "Perlu cek listing",
+    "source": "JobStreet",
+    "note": "Periksa jaringan/server dan status.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 88,
+    "company": "System Integrator Indonesia",
+    "role": "Junior Developer/Implementation Consultant",
+    "category": "IT/Software",
+    "status": "watchlist",
+    "deadline": "Per posisi",
+    "source": "Career portals",
+    "note": "Target umum; cari lowongan spesifik.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 89,
+    "company": "Fintech (DANA/Xendit/Kredivo/SeaBank)",
+    "role": "Data/Business Analyst",
+    "category": "Fintech/Data",
+    "status": "watchlist",
+    "deadline": "Per posisi",
+    "source": "Official career sites",
+    "note": "Target perusahaan; bukan satu lowongan.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 90,
+    "company": "Retail/logistics/e-commerce",
+    "role": "Junior BI/Data Analyst",
+    "category": "Data/BI",
+    "status": "watchlist",
+    "deadline": "Per posisi",
+    "source": "JobStreet/LinkedIn",
+    "note": "Cari lowongan spesifik.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 91,
+    "company": "Pertamina Group",
+    "role": "Talent Development Program",
+    "category": "Graduate Program",
+    "status": "watchlist",
+    "deadline": "Siklus berikutnya",
+    "source": "Pertamina Careers",
+    "note": "Tunggu pengumuman resmi.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 92,
+    "company": "Pertamina Group",
+    "role": "IT/Data Analyst",
+    "category": "IT/Data",
+    "status": "watchlist",
+    "deadline": "Per posisi",
+    "source": "Pertamina Careers",
+    "note": "Pantauan anak usaha dan pusat.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 93,
+    "company": "PLN",
+    "role": "Fresh Graduate/Officer",
+    "category": "Graduate Program",
+    "status": "watchlist",
+    "deadline": "Siklus berikutnya",
+    "source": "PLN Recruitment",
+    "note": "Tunggu pengumuman resmi.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 94,
+    "company": "PLN Icon Plus",
+    "role": "IT/Data",
+    "category": "IT/Data",
+    "status": "watchlist",
+    "deadline": "Per posisi",
+    "source": "PLN Icon Plus",
+    "note": "Pantauan.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 95,
+    "company": "KAI",
+    "role": "S1/IT Recruitment",
+    "category": "IT/Graduate",
+    "status": "watchlist",
+    "deadline": "Siklus berikutnya",
+    "source": "KAI Careers",
+    "note": "Pantauan resmi.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 96,
+    "company": "Jasa Marga",
+    "role": "IT/Management Trainee",
+    "category": "IT/Graduate",
+    "status": "watchlist",
+    "deadline": "Siklus berikutnya",
+    "source": "Jasa Marga Careers",
+    "note": "Pantauan.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 97,
+    "company": "Pos Indonesia",
+    "role": "IT/Digital",
+    "category": "IT/Data",
+    "status": "watchlist",
+    "deadline": "Per posisi",
+    "source": "Pos Indonesia Careers",
+    "note": "Pantauan.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 98,
+    "company": "CPNS/PPPK",
+    "role": "Formasi Sistem Informasi/Informatika/Data",
+    "category": "Government",
+    "status": "watchlist",
+    "deadline": "Belum ada formasi spesifik terkonfirmasi",
+    "source": "SSCASN / instansi",
+    "note": "Hanya tandai aktif saat ada pengumuman resmi.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 99,
+    "company": "BI/OJK/LPS/BPS/BSSN",
+    "role": "Analis/IT/Data",
+    "category": "Government/Finance",
+    "status": "watchlist",
+    "deadline": "Per siklus/formasi",
+    "source": "Portal resmi masing-masing",
+    "note": "Pantauan; tidak berarti sedang buka.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  },
+  {
+    "id": 100,
+    "company": "Freelance/Remote",
+    "role": "Excel, SQL, data cleaning, dashboard, QA, web",
+    "category": "Freelance",
+    "status": "watchlist",
+    "deadline": "Per proyek",
+    "source": "Upwork/Freelancer/Fiverr/TELUS",
+    "note": "Cari proyek aktif; jangan asumsikan listing lama masih tersedia.",
+    "appliedDate": "",
+    "updated": "2026-10-27"
+  }
+];
+const KEY='helmy_job_tracker_v1';const SHEET_KEY='helmy_job_tracker_google_sheet';let googleClientId='';let currentUsername='';let canManageJobs=false;let canDeleteJobs=false;let latestActivityId=0;let pendingImportJobs=[];try{document.getElementById('sheetId').value=localStorage.getItem(SHEET_KEY)||''}catch(error){console.error('ID Google Sheets gagal dibaca:',error)}let jobs=load();let editId=null;let apiReady=false;let saveTimer=null;function load(){try{const x=JSON.parse(localStorage.getItem(KEY));return Array.isArray(x)?x:seed}catch(e){return seed}}function setStorageStatus(message,offline=false){const status=document.getElementById('storageStatus');if(status){status.textContent=message;status.classList.toggle('offline',offline)}}function persistLocal(){try{localStorage.setItem(KEY,JSON.stringify(jobs))}catch(error){console.error('Cadangan browser gagal disimpan:',error);setStorageStatus('Penyimpanan browser penuh; ekspor cadangan secara manual.',true)}}function persist(){persistLocal();render();if(apiReady){setStorageStatus('Menyimpan ke server…');clearTimeout(saveTimer);saveTimer=setTimeout(saveRemote,300)}}async function saveRemote(){try{const response=await fetch('/api/jobs',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({jobs})});if(!response.ok){let failure={};try{failure=await response.json()}catch{};if(response.status>=500)apiReady=false;throw new Error(failure.error||('Server menjawab '+response.status))}setStorageStatus('Tersimpan di server · cadangan browser aktif');if(canManageJobs)await loadActivity()}catch(error){console.error('Penyimpanan server gagal:',error);if(error instanceof TypeError)apiReady=false;setStorageStatus('Gagal menyimpan ke server: '+error.message,true)}}async function showAdminPage(page){const pages=['dashboardSection','adminPanel','activityPanel','jobsSection'];if(!pages.includes(page))page='dashboardSection';pages.forEach(id=>{document.getElementById(id).hidden=id!==page});document.querySelectorAll('#adminNav a[data-admin-page]').forEach(link=>{if(link.dataset.adminPage===page)link.setAttribute('aria-current','page');else link.removeAttribute('aria-current')})}window.addEventListener('hashchange',()=>{if(canManageJobs)showAdminPage(location.hash.slice(1))});async function initialize(){setStorageStatus('Menyambungkan ke penyimpanan…');try{const configResponse=await fetch('/api/config');if(configResponse.status===401){location.replace('/login');return}if(!configResponse.ok)throw new Error('Konfigurasi server menjawab '+configResponse.status);const config=await configResponse.json();if(typeof config.googleClientId!=='string')throw new Error('Konfigurasi Google server tidak valid');googleClientId=config.googleClientId;currentUsername=config.currentUser&&typeof config.currentUser.username==='string'?config.currentUser.username:'';canManageJobs=Boolean(config.currentUser&&config.currentUser.role==='admin');canDeleteJobs=canManageJobs;document.getElementById('stats').classList.toggle('compact',!canManageJobs);if(config.currentUser){const account=document.getElementById('currentAccount');account.hidden=false;account.textContent=config.currentUser.username+' · '+(config.currentUser.role==='admin'?'Admin':'Pengguna')}if(config.currentUser&&config.currentUser.role==='admin'){document.getElementById('adminNav').hidden=false;history.replaceState(null,'',location.pathname+location.search);showAdminPage('dashboardSection');document.getElementById('adminPanel').after(document.getElementById('activityPanel'));await Promise.all([loadUsers(),loadActivity()]);setInterval(loadActivity,30000)}const response=await fetch('/api/jobs');if(!response.ok)throw new Error('Server menjawab '+response.status);const remote=await response.json();if(!Array.isArray(remote.jobs)||typeof remote.initialized!=='boolean')throw new Error('Format data server tidak valid');if(remote.initialized){jobs=remote.jobs;apiReady=true;persistLocal();initCats();initCreators();render();setStorageStatus('Tersimpan di server · cadangan browser aktif');return}jobs=load();apiReady=true;initCats();initCreators();persistLocal();render();await saveRemote()}catch(error){console.error('Tidak bisa memuat data server:',error);apiReady=false;jobs=load();initCats();initCreators();render();setStorageStatus('Server belum tersambung; data tersimpan di browser ini saja.',true)}}const labels={applied:'Sudah dilamar',in_process:'Sedang diproses',rejected:'Ditolak / tidak lolos',to_apply:'Akan dilamar',verify:'Perlu verifikasi',watchlist:'Pantauan',closed:'Tutup / batal'};const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));const safeLink=(url,label)=>/^https?:\/\//i.test(String(url||''))?'<a href="'+esc(url)+'" target="_blank" rel="noopener noreferrer">'+label+'</a>':'\u2014';const formatAddedAt=value=>{if(!value)return 'Belum tercatat';const date=new Date(value);if(Number.isNaN(date.getTime()))return 'Belum tercatat';return new Intl.DateTimeFormat('id-ID',value.length===10?{dateStyle:'medium',timeZone:'UTC'}:{dateStyle:'medium',timeStyle:'short'}).format(date)};function renderStats(){const n=status=>jobs.filter(job=>job.status===status).length;const total=jobs.length;const submitted=n('applied')+n('in_process')+n('rejected');const pending=jobs.filter(job=>['to_apply','verify','watchlist'].includes(job.status)).length;const ratio=value=>total?Math.round(value*100/total):0;const cards=[{className:'stat-total',label:'Total lowongan',value:total,detail:'Seluruh target pekerjaan',percent:100,icon:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5m0 14h16M8 15l3-4 3 2 5-7"/></svg>'},{className:'stat-sent',label:'Sudah dilamar',value:submitted,detail:'Sudah masuk proses lamaran',percent:ratio(submitted),icon:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13m-5-5 5 5-5 5"/></svg>'},{className:'stat-progress',label:'Sedang diproses',value:n('in_process'),detail:'Menunggu perkembangan',percent:ratio(n('in_process')),icon:'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/></svg>'},{className:'stat-pending',label:'Belum dilamar',value:pending,detail:'Target yang bisa ditindaklanjuti',percent:ratio(pending),icon:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14m-7-7h14"/></svg>'}];document.getElementById('stats').innerHTML=cards.map(card=>'<article class="stat '+card.className+'"><div class="stat-top"><span class="stat-icon">'+card.icon+'</span><span class="stat-period">RINGKASAN</span></div><div class="stat-label">'+card.label+'</div><div class="stat-value">'+card.value+'</div><div class="stat-detail">'+card.detail+'</div><div class="stat-track" role="img" aria-label="'+card.percent+'% dari total lowongan"><span style="width:'+card.percent+'%"></span></div><div class="stat-foot"><span>Proporsi tracker</span><strong>'+card.percent+'%</strong></div></article>').join('')}function initCats(){const select=document.getElementById('categoryFilter');if(!select)return;const currentVal=select.value||'all';let cats=[...new Set(jobs.map(j=>j.category).filter(Boolean))].sort();select.innerHTML='<option value="all">Semua kategori</option>'+cats.map(c=>'<option value="'+esc(c)+'">'+esc(c)+'</option>').join('');if([...select.options].some(o=>o.value===currentVal))select.value=currentVal;else select.value='all'}function initCreators(){const select=document.getElementById('creatorFilter');if(!select)return;const currentVal=select.value||'all';const creators=[...new Set(jobs.map(j=>j.createdBy).filter(Boolean))].sort();const hasEmptyCreator=jobs.some(j=>!j.createdBy);let html='<option value="all">Semua penambah</option>';creators.forEach(user=>{const isMe=user===currentUsername;html+='<option value="'+esc(user)+'">'+esc(user)+(isMe?' (Saya)':'')+'</option>'});if(hasEmptyCreator)html+='<option value="__none__">Belum tercatat</option>';select.innerHTML=html;if([...select.options].some(o=>o.value===currentVal))select.value=currentVal;else select.value='all'}window.filterByCreator=function(user){const select=document.getElementById('creatorFilter');if(!select)return;select.value=user||'__none__';render()};function render(){renderStats();const searchInput=document.getElementById('search');const q=searchInput?searchInput.value.toLowerCase().trim():'';const s=document.getElementById('statusFilter').value;const c=document.getElementById('categoryFilter').value;const creatorEl=document.getElementById('creatorFilter');const u=creatorEl?creatorEl.value:'all';const clearSearchBtn=document.getElementById('clearSearchBtn');if(clearSearchBtn)clearSearchBtn.hidden=!q;const isFiltered=q!==''||s!=='all'||c!=='all'||u!=='all';const resetBtn=document.getElementById('resetFiltersBtn');if(resetBtn)resetBtn.hidden=!isFiltered;let list=jobs.filter(j=>{const matchStatus=s==='all'||j.status===s;const matchCat=c==='all'||j.category===c;const matchCreator=u==='all'||(u==='__none__'?(!j.createdBy||!j.createdBy.trim()):j.createdBy===u);const matchQuery=!q||[j.company,j.role,j.category,j.note,j.source,j.sourceUrl,j.applicationUrl,j.sector,j.employerType,j.deadline,j.createdBy].join(' ').toLowerCase().includes(q);return matchStatus&&matchCat&&matchCreator&&matchQuery});const sort=document.getElementById('sort').value;if(sort==='company')list.sort((a,b)=>(a.company||'').localeCompare(b.company||''));if(sort==='deadline')list.sort((a,b)=>(a.deadline||'').localeCompare(b.deadline||''));const countBadge=document.getElementById('resultCountBadge');if(countBadge)countBadge.textContent=isFiltered?('Menampilkan '+list.length+' dari '+jobs.length+' lowongan'):('Total '+jobs.length+' lowongan');document.getElementById('tbody').innerHTML=list.map(j=>{const creatorMarkup=j.createdBy?('<span class="user-pill'+(j.createdBy===currentUsername?' is-me':'')+'" title="Filter lowongan oleh '+esc(j.createdBy)+'" onclick="filterByCreator(\''+esc(j.createdBy)+'\')"><svg viewBox="0 0 24 24" class="user-pill-icon"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>'+esc(j.createdBy)+(j.createdBy===currentUsername?' <small>(Saya)</small>':'')+'</span>'):('<span class="muted-tag" onclick="filterByCreator(\'\')" style="cursor:pointer;" title="Filter lowongan belum tercatat">Belum tercatat</span>');return `<tr><td><input class="check" type="checkbox" title="Checklist sudah pernah dilamar" ${['applied','in_process','rejected','closed'].includes(j.status)?'checked':''} ${canManageJobs?'':'disabled'} onchange="toggleApplied(${j.id},this.checked)"></td><td class="num">${j.id}</td><td><div class="role">${esc(j.company)}</div><div>${esc(j.role)}</div><div class="sub">${esc(j.category)}${j.appliedDate?' • Dilamar: '+esc(j.appliedDate):''}</div></td><td>${formatAddedAt(j.createdAt)}</td><td>${creatorMarkup}</td><td>${esc(j.sector)||'\u2014'}</td><td>${j.employerType==='government'?'Pemerintah':j.employerType==='private'?'Swasta':'\u2014'}</td><td><select class="statusselect" aria-label="Status" ${canManageJobs?'':'disabled'} onchange="changeStatus(${j.id},this.value)">${Object.entries(labels).map(([v,l])=>'<option value="'+v+'" '+(j.status===v?'selected':'')+'>'+l+'</option>').join('')}</select></td><td>${esc(j.deadline||'—')}</td><td>${esc(j.source||'—')}</td><td>${safeLink(j.sourceUrl,'Buka')}</td><td>${safeLink(j.applicationUrl,'Lamar')}</td><td><div>${esc(j.note||'')}</div>${canManageJobs?'<div class="actions" style="margin-top:7px"><button class="mini" onclick="editJob('+j.id+')">Edit</button></div>':''}</td></tr>`}).join('');document.getElementById('empty').hidden=!!list.length}window.changeStatus=(id,status)=>{if(!canManageJobs)return;let j=jobs.find(x=>x.id===id);if(j){j.status=status;if(['applied','in_process','rejected'].includes(status)&&!j.appliedDate)j.appliedDate=new Date().toISOString().slice(0,10);persist()}};window.toggleApplied=(id,on)=>changeStatus(id,on?'applied':'to_apply');window.editJob=id=>{if(!canManageJobs)return;editId=id;let j=jobs.find(x=>x.id===id);document.getElementById('modalTitle').textContent='Edit — '+j.company;fillForm(j);document.getElementById('deleteBtn').hidden=!canDeleteJobs;document.getElementById('modal').classList.add('show')};function fillForm(j){document.getElementById('fStatus').disabled=!canManageJobs;[['Company','company'],['Role','role'],['Sector','sector'],['EmployerType','employerType'],['Status','status'],['Date','appliedDate'],['Deadline','deadline'],['Source','source'],['SourceUrl','sourceUrl'],['ApplicationUrl','applicationUrl'],['Note','note']].forEach(([a,b])=>document.getElementById('f'+a).value=j[b]||'')}function openNew(){editId=null;document.getElementById('modalTitle').textContent='Tambah lamaran';fillForm({company:'',role:'',sector:'',employerType:'',status:'to_apply',appliedDate:'',deadline:'',source:'',sourceUrl:'',applicationUrl:'',note:''});document.getElementById('deleteBtn').hidden=true;document.getElementById('modal').classList.add('show')}document.getElementById('addBtn').onclick=openNew;document.getElementById('cancelBtn').onclick=()=>document.getElementById('modal').classList.remove('show');document.getElementById('saveBtn').onclick=()=>{if(editId&&!canManageJobs){alert('Hanya admin yang dapat mengubah data lamaran.');return}let obj={company:fCompany.value.trim(),role:fRole.value.trim(),status:fStatus.value,appliedDate:fDate.value,deadline:fDeadline.value.trim(),source:fSource.value.trim(),sourceUrl:fSourceUrl.value.trim(),applicationUrl:fApplicationUrl.value.trim(),sector:fSector.value.trim(),employerType:fEmployerType.value,note:fNote.value.trim(),category:'Lainnya',updated:new Date().toISOString().slice(0,10)};if(!obj.company||!obj.role){alert('Isi perusahaan dan posisi dulu ya.');return}if(editId){let old=jobs.find(j=>j.id===editId);Object.assign(old,obj)}else{obj.createdAt=new Date().toISOString();obj.createdBy=currentUsername;obj.id=Math.max(0,...jobs.map(j=>j.id))+1;jobs.push(obj)}document.getElementById('modal').classList.remove('show');initCats();initCreators();persist();showToast(editId?'Perubahan lamaran disimpan':'Lowongan baru ditambahkan')};document.getElementById('deleteBtn').onclick=()=>{if(canManageJobs&&canDeleteJobs&&editId&&confirm('Hapus entri ini?')){jobs=jobs.filter(j=>j.id!==editId);document.getElementById('modal').classList.remove('show');initCats();initCreators();persist();showToast('Lamaran dihapus')}};['search','statusFilter','categoryFilter','creatorFilter','sort'].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener(id==='search'?'input':'change',render)});function resetFilters(){document.getElementById('search').value='';document.getElementById('statusFilter').value='all';document.getElementById('categoryFilter').value='all';const cEl=document.getElementById('creatorFilter');if(cEl)cEl.value='all';document.getElementById('sort').value='priority';render()}const resetBtn=document.getElementById('resetFiltersBtn');if(resetBtn)resetBtn.onclick=resetFilters;const emptyResetBtn=document.getElementById('emptyResetBtn');if(emptyResetBtn)emptyResetBtn.onclick=resetFilters;const clearSearchBtn=document.getElementById('clearSearchBtn');if(clearSearchBtn)clearSearchBtn.onclick=()=>{document.getElementById('search').value='';render()};function download(name,content,type){let blob=new Blob([content],{type}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();URL.revokeObjectURL(a.href)}document.getElementById('exportBtn').onclick=()=>{download('helmy-job-tracker-backup.json',JSON.stringify(jobs,null,2),'application/json');showToast('Cadangan JSON diunduh')};document.getElementById('xlsxBtn').onclick=async()=>{const button=document.getElementById('xlsxBtn');button.disabled=true;const original=button.innerHTML;button.innerHTML='<span>Menyiapkan Excel…</span>';try{const response=await fetch('/api/export/xlsx',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({jobs})});if(!response.ok){let message='Ekspor Excel gagal.';try{const failure=await response.json();message=failure.error||message}catch{}throw new Error(message)}const blob=await response.blob();const url=URL.createObjectURL(blob);const link=document.createElement('a');link.href=url;link.download='helmy-job-tracker.xlsx';link.click();URL.revokeObjectURL(url);showToast('File Excel berhasil diunduh')}catch(error){console.error('Ekspor Excel gagal:',error);showToast(error.message,'error')}finally{button.disabled=false;button.innerHTML=original}};document.getElementById('csvBtn').onclick=()=>{let cols=['id','company','role','category','createdAt','createdBy','sector','employerType','status','appliedDate','deadline','source','sourceUrl','applicationUrl','note'];let csv=[cols.join(','),...jobs.map(j=>cols.map(k=>'"'+String(j[k]??'').replace(/"/g,'""')+'"').join(','))].join('\r\n');download('helmy-job-tracker.csv','\ufeff'+csv,'text/csv;charset=utf-8');showToast('File CSV berhasil diunduh')};const sheetColumns=[['id','ID'],['company','Perusahaan'],['role','Posisi'],['category','Kategori'],['createdAt','Waktu Ditambahkan'],['sector','Sektor'],['employerType','Pemerintah/Swasta'],['status','Status'],['appliedDate','Tanggal Lamaran'],['deadline','Tenggat'],['source','Sumber'],['sourceUrl','URL Sumber'],['applicationUrl','URL Lamaran'],['note','Catatan']];function googleRows(){return [sheetColumns.map(([,header])=>header),...jobs.map(job=>sheetColumns.map(([key])=>key==='employerType'?job.employerType==='government'?'Pemerintah':job.employerType==='private'?'Swasta':'':key==='status'?labels[job.status]||job.status:String(job[key]??'')))]}async function googleRequest(url,token,options={}){const response=await fetch(url,{...options,headers:{Authorization:'Bearer '+token,'Content-Type':'application/json',...(options.headers||{})}});let data={};try{data=await response.json()}catch(error){if(response.ok)throw new Error('Respons Google tidak valid.')}if(!response.ok)throw new Error(data.error?.message||('Google menjawab '+response.status));return data}async function uploadGoogleSheet(){const status=document.getElementById('sheetsStatus');const input=document.getElementById('sheetId');const rawId=input.value.trim();const segment=rawId.split('/spreadsheets/d/')[1];const spreadsheetId=segment?segment.split(/[?/#]/)[0]:rawId;if(!spreadsheetId){status.textContent='Tempel URL atau ID spreadsheet terlebih dahulu.';return}if(!/^[A-Za-z0-9_-]+$/.test(spreadsheetId)){status.textContent='URL atau ID spreadsheet tidak valid.';return}if(!googleClientId){status.textContent='Google OAuth belum dikonfigurasi. Admin perlu mengatur GOOGLE_CLIENT_ID.';return}if(!window.google?.accounts?.oauth2){status.textContent='Layanan login Google belum termuat. Muat ulang halaman atau periksa koneksi.';return}if(!confirm('Unggah ke tab pertama spreadsheet ini? Data pada kolom A:M akan diganti dan baris lama yang tersisa akan dihapus.'))return;input.value=spreadsheetId;try{localStorage.setItem(SHEET_KEY,spreadsheetId)}catch(error){console.error('ID Google Sheets gagal disimpan:',error)}const button=document.getElementById('googleSheetsBtn');button.disabled=true;status.textContent='Menunggu login/izin Google…';try{const token=await new Promise((resolve,reject)=>{const client=window.google.accounts.oauth2.initTokenClient({client_id:googleClientId,scope:'https://www.googleapis.com/auth/spreadsheets',callback:result=>{if(result.error){reject(new Error(result.error_description||result.error));return}if(!result.access_token){reject(new Error('Google tidak memberikan token akses.'));return}resolve(result.access_token)}});client.requestAccessToken({prompt:''})});status.textContent='Membaca spreadsheet…';const api='https://sheets.googleapis.com/v4/spreadsheets/'+encodeURIComponent(spreadsheetId);const metadata=await googleRequest(api+'?fields='+encodeURIComponent('sheets(properties(title,index))'),token);const firstSheet=metadata.sheets?.[0]?.properties?.title;if(!firstSheet)throw new Error('Spreadsheet tidak memiliki tab yang bisa diperbarui.');const quotedTitle="'"+firstSheet.replace(/'/g,"''")+"'";const range=quotedTitle+'!A:N';const old=await googleRequest(api+'/values/'+encodeURIComponent(range),token);const values=googleRows();status.textContent='Mengunggah '+jobs.length+' lowongan…';await googleRequest(api+'/values/'+encodeURIComponent(range)+'?valueInputOption=RAW',token,{method:'PUT',body:JSON.stringify({majorDimension:'ROWS',values})});const oldCount=old.values?.length||0;if(oldCount>values.length){const tail=quotedTitle+'!A'+(values.length+1)+':N'+oldCount;await googleRequest(api+'/values/'+encodeURIComponent(tail)+':clear',token,{method:'POST',body:'{}'})}status.textContent='Berhasil diperbarui: '+jobs.length+' lowongan.'}catch(error){console.error('Unggah Google Sheets gagal:',error);status.textContent='Unggah gagal: '+error.message}finally{button.disabled=false}}document.getElementById('googleSheetsBtn').onclick=uploadGoogleSheet;const activityActions={job_added:'menambahkan lamaran',job_edited:'mengubah lamaran',job_deleted:'menghapus lamaran',user_added:'membuat akun',user_deleted:'menghapus akun'};function formatActivityTime(value){const normalized=/Z$|[+-]\d{2}:?\d{2}$/.test(value)?value:value.replace(' ','T')+'Z';const date=new Date(normalized);return Number.isNaN(date.getTime())?'Waktu tidak diketahui':new Intl.DateTimeFormat('id-ID',{dateStyle:'medium',timeStyle:'short'}).format(date)}async function loadActivity(){if(!canManageJobs)return;const status=document.getElementById('activityStatus');try{const response=await fetch('/api/activity');const result=await response.json();if(!response.ok)throw new Error(result.error||'Tidak bisa memuat aktivitas.');if(!Array.isArray(result.activities))throw new Error('Format aktivitas server tidak valid.');const list=result.activities;latestActivityId=list.reduce((largest,item)=>Math.max(largest,Number(item.id)||0),0);let seenId=0;try{seenId=Number(localStorage.getItem('helmy_job_tracker_activity_seen_'+currentUsername)||0)}catch(error){console.error('Status baca aktivitas gagal diperiksa:',error)}const unread=list.filter(item=>Number(item.id)>seenId).length;const badge=document.getElementById('activityBadge');badge.hidden=unread===0;badge.textContent=unread>99?'99+':String(unread);document.getElementById('activityList').innerHTML=list.length?list.map(item=>'<li class="activity-item"><span class="activity-dot" aria-hidden="true"></span><div class="activity-copy"><div><strong>'+esc(item.actor_username)+'</strong> '+esc(activityActions[item.action]||'melakukan aktivitas')+'</div><p>'+esc(item.summary)+'</p><time datetime="'+esc(item.created_at)+'">'+esc(formatActivityTime(item.created_at))+'</time></div></li>').join(''):'<li class="activity-empty">Belum ada aktivitas tercatat.</li>';status.textContent=list.length?'Menampilkan '+list.length+' aktivitas terbaru.':'Aktivitas baru akan muncul di sini.'}catch(error){console.error('Aktivitas gagal dimuat:',error);status.textContent='Gagal memuat aktivitas: '+error.message}}document.getElementById('markActivityRead').addEventListener('click',()=>{try{localStorage.setItem('helmy_job_tracker_activity_seen_'+currentUsername,String(latestActivityId))}catch(error){console.error('Status baca aktivitas gagal disimpan:',error)}loadActivity()});async function loadUsers(){const status=document.getElementById('userAdminStatus');try{const response=await fetch('/api/users');const result=await response.json();if(!response.ok)throw new Error(result.error||'Tidak bisa memuat akun.');const list=document.getElementById('userList');list.innerHTML='<table style="min-width:0"><thead><tr><th>Username</th><th>Peran</th><th>Status</th><th>Aksi</th></tr></thead><tbody>'+result.users.map(user=>'<tr><td>'+esc(user.username)+'</td><td>'+esc(user.role)+'</td><td>'+(user.active?'Aktif':'Nonaktif')+'</td><td>'+(user.role==='user'?'<button class="mini" type="button" data-user-id="'+user.id+'">Hapus</button>':'Admin')+'</td></tr>').join('')+'</tbody></table>';list.querySelectorAll('[data-user-id]').forEach(button=>button.onclick=()=>deleteUser(button.dataset.userId));status.textContent='Bagikan username dan kata sandi awal secara pribadi. Minta pengguna mengganti kata sandi setelah login.'}catch(error){console.error('Pengelolaan akun gagal:',error);status.textContent='Gagal memuat akun: '+error.message}}async function deleteUser(id){if(!confirm('Hapus akun ini dan cabut semua sesi loginnya?'))return;const status=document.getElementById('userAdminStatus');try{const response=await fetch('/api/users/'+encodeURIComponent(id),{method:'DELETE'});const result=await response.json();if(!response.ok)throw new Error(result.error||'Tidak bisa menghapus akun.');await loadUsers();await loadActivity()}catch(error){console.error('Penghapusan akun gagal:',error);status.textContent='Gagal menghapus akun: '+error.message}}document.getElementById('addUserForm').addEventListener('submit',async event=>{event.preventDefault();const form=event.currentTarget;const status=document.getElementById('userAdminStatus');const button=form.querySelector('button[type="submit"]');button.disabled=true;status.textContent='Membuat akun…';try{const response=await fetch('/api/users',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:document.getElementById('newUsername').value.trim(),password:document.getElementById('newUserPassword').value})});const result=await response.json();if(!response.ok)throw new Error(result.error||'Tidak bisa membuat akun.');form.reset();await loadUsers();await loadActivity();status.textContent='Akun '+result.user.username+' berhasil dibuat. Bagikan username dan password awal dengan aman.'}catch(error){console.error('Pembuatan akun gagal:',error);status.textContent='Gagal membuat akun: '+error.message}finally{button.disabled=false}});document.getElementById('logoutBtn').onclick=async()=>{const button=document.getElementById('logoutBtn');button.disabled=true;try{const response=await fetch('/api/logout',{method:'POST'});if(!response.ok)throw new Error('Server menjawab '+response.status);location.replace('/login')}catch(error){console.error('Logout gagal:',error);alert('Tidak bisa keluar: '+error.message);button.disabled=false}};function showToast(message,type='success'){const container=document.getElementById('toastContainer');if(!container)return;const toast=document.createElement('div');toast.className='toast toast-'+type;toast.innerHTML='<span>'+esc(message)+'</span>';container.appendChild(toast);setTimeout(()=>{toast.style.opacity='0';toast.style.transform='translateY(10px) scale(0.95)';setTimeout(()=>toast.remove(),250)},3200)}const importModal=document.getElementById('importModal');const importDropzone=document.getElementById('importDropzone');const importFileInput=document.getElementById('importJobsFileInput');const importUploadStep=document.getElementById('importUploadStep');const importPreviewStep=document.getElementById('importPreviewStep');const importLoadingState=document.getElementById('importLoadingState');const confirmImportBtn=document.getElementById('confirmImportBtn');const changeImportFileBtn=document.getElementById('changeImportFileBtn');function openImportModal(){pendingImportJobs=[];importUploadStep.hidden=false;importPreviewStep.hidden=true;importLoadingState.hidden=true;confirmImportBtn.disabled=true;confirmImportBtn.textContent='Impor Lowongan';changeImportFileBtn.hidden=true;importFileInput.value='';importModal.classList.add('show')}function closeImportModal(){importModal.classList.remove('show')}document.getElementById('importJobsBtn').onclick=openImportModal;document.getElementById('closeImportModalBtn').onclick=closeImportModal;document.getElementById('cancelImportModalBtn').onclick=closeImportModal;importDropzone.onclick=()=>importFileInput.click();importDropzone.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();importFileInput.click()}});['dragenter','dragover'].forEach(name=>{importDropzone.addEventListener(name,e=>{e.preventDefault();importDropzone.classList.add('drag-active')})});['dragleave','drop'].forEach(name=>{importDropzone.addEventListener(name,e=>{e.preventDefault();importDropzone.classList.remove('drag-active')})});importDropzone.addEventListener('drop',e=>{const file=e.dataTransfer?.files?.[0];if(file)handleImportFile(file)});importFileInput.onchange=e=>{const file=e.target.files?.[0];if(file)handleImportFile(file)};changeImportFileBtn.onclick=()=>{importUploadStep.hidden=false;importPreviewStep.hidden=true;changeImportFileBtn.hidden=true;confirmImportBtn.disabled=true;importFileInput.value=''};document.getElementById('downloadCsvTemplateBtn').onclick=e=>{e.stopPropagation();const sampleCsv=['Perusahaan,Posisi,Kategori,Status,Tenggat,Sumber,URL Sumber,URL Lamaran,Catatan,Sektor,Pemerintah/Swasta','"PT Teknologi Nusantara","Frontend Engineer","IT","Akan dilamar","15 Des 2026","LinkedIn","https://linkedin.com/jobs/1","https://careers.example.com","Lowongan prioritas","Teknologi","swasta"','"Bank Sentral","Data Analyst","Data","Akan dilamar","20 Des 2026","Website Resmi","https://bank.example.go.id","https://rekrutmen.example.go.id","Syarat IPK min 3.25","Keuangan","pemerintah"'].join('\r\n');download('template-lowongan-pekerjaan.csv','\ufeff'+sampleCsv,'text/csv;charset=utf-8');showToast('Template CSV berhasil diunduh')};document.getElementById('downloadXlsxTemplateBtn').onclick=async e=>{e.stopPropagation();try{const sampleJobs=[{id:1,company:'PT Teknologi Nusantara',role:'Frontend Engineer',category:'IT',status:'to_apply',deadline:'15 Des 2026',source:'LinkedIn',sourceUrl:'https://linkedin.com/jobs/1',applicationUrl:'https://careers.example.com',note:'Lowongan prioritas',sector:'Teknologi',employerType:'private'},{id:2,company:'Bank Sentral',role:'Data Analyst',category:'Data',status:'to_apply',deadline:'20 Des 2026',source:'Website Resmi',sourceUrl:'https://bank.example.go.id',applicationUrl:'https://rekrutmen.example.go.id',note:'Syarat IPK min 3.25',sector:'Keuangan',employerType:'government'}];const response=await fetch('/api/export/xlsx',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({jobs:sampleJobs})});if(!response.ok)throw new Error('Gagal mengunduh template Excel.');const blob=await response.blob();const url=URL.createObjectURL(blob);const link=document.createElement('a');link.href=url;link.download='template-lowongan-pekerjaan.xlsx';link.click();URL.revokeObjectURL(url);showToast('Template Excel berhasil diunduh')}catch(err){alert(err.message)}};function formatFileSize(bytes){if(bytes<1024)return bytes+' B';if(bytes<1024*1024)return(bytes/1024).toFixed(1)+' KB';return(bytes/(1024*1024)).toFixed(1)+' MB'}function clientParseCsv(text){const lines=[];let row=[''];let inQuotes=false;const firstLineEnd=text.indexOf('\n');const firstLine=firstLineEnd===-1?text:text.slice(0,firstLineEnd);const delimiter=(firstLine.split(';').length>firstLine.split(',').length)?';':',';for(let i=0;i<text.length;i++){const c=text[i];const next=text[i+1];if(inQuotes){if(c==='"'){if(next==='"'){row[row.length-1]+='"';i++}else inQuotes=false}else row[row.length-1]+=c}else{if(c==='"')inQuotes=true;else if(c===delimiter)row.push('');else if(c==='\r'){if(next==='\n')i++;lines.push(row);row=['']}else if(c==='\n'){lines.push(row);row=['']}else row[row.length-1]+=c}}if(row.length>1||(row.length===1&&row[0]!==''))lines.push(row);return lines}async function handleImportFile(file){if(!file)return;const ext=file.name.slice(file.name.lastIndexOf('.')).toLowerCase();if(!['.xlsx','.xls','.csv'].includes(ext)){alert('Format file tidak didukung. Harap pilih file .xlsx, .xls, atau .csv');return}if(file.size>2*1024*1024){alert('Ukuran file melebihi batas maksimal 2MB.');return}importUploadStep.hidden=true;importPreviewStep.hidden=true;importLoadingState.hidden=false;document.getElementById('importLoadingText').textContent='Menganalisis file '+file.name+'…';try{let parseResult;if(ext==='.csv'){const text=await file.text();const cleanText=text.charCodeAt(0)===0xfeff?text.slice(1):text;const response=await fetch('/api/import/parse',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({csv:cleanText})});if(response.ok){parseResult=await response.json()}else{const matrix=clientParseCsv(cleanText);parseResult={jobs:[],totalRows:matrix.length-1,skippedRows:0}}}else{const buffer=await file.arrayBuffer();const response=await fetch('/api/import/parse',{method:'POST',headers:{'Content-Type':'application/octet-stream','X-File-Name':encodeURIComponent(file.name)},body:buffer});if(!response.ok){let failure={};try{failure=await response.json()}catch{};throw new Error(failure.error||('Gagal menganalisis file Excel ('+response.status+')'))}parseResult=await response.json()}if(!parseResult||!Array.isArray(parseResult.jobs)){throw new Error('Hasil analisis file tidak valid.')}pendingImportJobs=parseResult.jobs;document.getElementById('previewFileName').textContent=file.name;document.getElementById('previewFileSize').textContent=formatFileSize(file.size);document.getElementById('previewValidCount').textContent=pendingImportJobs.length+' lowongan valid';const skippedNotice=document.getElementById('previewSkippedNotice');if(parseResult.skippedRows>0){skippedNotice.hidden=false;skippedNotice.textContent=parseResult.skippedRows+' baris diabaikan (posisi/perusahaan kosong)'}else{skippedNotice.hidden=true}const roleNotice=document.getElementById('importRoleNotice');if(roleNotice)roleNotice.hidden=canManageJobs;const tbody=document.getElementById('importPreviewTbody');const previewSubset=pendingImportJobs.slice(0,8);tbody.innerHTML=previewSubset.map((job,idx)=>'<tr><td class="num">'+(idx+1)+'</td><td><strong>'+esc(job.company)+'</strong></td><td>'+esc(job.role)+'</td><td><span class="pill '+(job.status||'to_apply')+'">'+esc(labels[job.status]||job.status)+'</span></td><td>'+esc(job.category||'Lainnya')+'</td><td>'+esc(job.deadline||'—')+'</td><td>'+esc(job.source||'—')+'</td></tr>').join('');const truncatedHint=document.getElementById('previewTruncatedHint');if(pendingImportJobs.length>8)truncatedHint.textContent='Menampilkan 8 baris pertama dari total '+pendingImportJobs.length+' lowongan yang akan diimpor.';else truncatedHint.textContent='';importLoadingState.hidden=true;importPreviewStep.hidden=false;changeImportFileBtn.hidden=false;confirmImportBtn.disabled=pendingImportJobs.length===0;confirmImportBtn.textContent='✓ Impor '+pendingImportJobs.length+' Lowongan'}catch(error){console.error('Import parse error:',error);importLoadingState.hidden=true;importUploadStep.hidden=false;alert('Gagal membaca file lowongan: '+error.message)}}confirmImportBtn.onclick=()=>{if(!pendingImportJobs||!pendingImportJobs.length)return;const count=pendingImportJobs.length;confirmImportBtn.disabled=true;confirmImportBtn.textContent='Menyimpan lowongan…';let maxId=Math.max(0,...jobs.map(j=>j.id));const newJobs=pendingImportJobs.map(j=>{maxId+=1;return{...j,id:maxId,status:canManageJobs?(j.status||'to_apply'):'to_apply',category:j.category||'Lainnya',createdAt:j.createdAt||new Date().toISOString(),createdBy:(canManageJobs&&j.createdBy)?j.createdBy:currentUsername}});jobs=[...jobs,...newJobs];closeImportModal();initCats();initCreators();persist();showToast('✓ Berhasil menambahkan '+count+' lowongan baru ke tracker!')};initialize();
+</script>
+<script>
+const loadActivityWithDelete = loadActivity;
+loadActivity = async function(){
+  if(!canManageJobs)return;
+  await loadActivityWithDelete();
+  const status=document.getElementById('activityStatus');
+  try{
+    const response=await fetch('/api/activity');
+    const result=await response.json();
+    if(!response.ok)throw new Error(result.error||'Tidak bisa memuat aktivitas.');
+    if(!Array.isArray(result.activities))throw new Error('Format aktivitas server tidak valid.');
+    const list=result.activities;
+    document.getElementById('activityList').innerHTML=list.length?list.map(item=>'<li class="activity-item"><span class="activity-dot" aria-hidden="true"></span><div class="activity-copy"><div><strong>'+esc(item.actor_username)+'</strong> '+esc(activityActions[item.action]||'melakukan aktivitas')+'</div><p>'+esc(item.summary)+'</p><time datetime="'+esc(item.created_at)+'">'+esc(formatActivityTime(item.created_at))+'</time></div><button class="mini" type="button" data-activity-id="'+esc(item.id)+'" aria-label="Hapus aktivitas: '+esc(item.summary)+'">Hapus</button></li>').join(''):'<li class="activity-empty">Belum ada aktivitas tercatat.</li>';
+    status.textContent=list.length?'Menampilkan '+list.length+' aktivitas terbaru.':'Aktivitas baru akan muncul di sini.';
+  }catch(error){
+    console.error('Aksi hapus aktivitas gagal dimuat:',error);
+    status.textContent='Gagal memuat aksi hapus aktivitas: '+error.message;
+  }
+};
+document.getElementById('activityList').addEventListener('click',async event=>{
+  const button=event.target.closest('button[data-activity-id]');
+  if(!button||!confirm('Hapus catatan aktivitas ini? Tindakan ini tidak dapat dibatalkan.'))return;
+  button.disabled=true;
+  const status=document.getElementById('activityStatus');
+  try{
+    const response=await fetch('/api/activity/'+encodeURIComponent(button.dataset.activityId),{method:'DELETE'});
+    const result=await response.json();
+    if(!response.ok)throw new Error(result.error||'Tidak bisa menghapus aktivitas.');
+    await loadActivity();
+  }catch(error){
+    console.error('Penghapusan aktivitas gagal:',error);
+    status.textContent='Gagal menghapus aktivitas: '+error.message;
+    button.disabled=false;
+  }
+});
+</script></body></html>
