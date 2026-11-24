@@ -168,6 +168,7 @@ test('job API requires authentication and persists valid data across restarts', 
         company: 'Contoh',
         role: 'Analis',
         category: 'Data',
+        location: 'Bandung',
         sector: 'Keuangan',
         employerType: 'private',
         status: 'applied',
@@ -188,6 +189,7 @@ test('job API requires authentication and persists valid data across restarts', 
   const savedJobs = await fetch(`${baseUrl}/api/jobs`, { headers: auth });
   const persistedJob = (await savedJobs.json()).jobs[0];
   assert.equal(persistedJob.sector, 'Keuangan');
+  assert.equal(persistedJob.location, 'Bandung');
   assert.equal(persistedJob.employerType, 'private');
   assert.equal(persistedJob.sourceUrl, 'https://example.com/job');
   assert.equal(persistedJob.applicationUrl, 'https://example.com/apply');
@@ -312,6 +314,39 @@ test('job API requires authentication and persists valid data across restarts', 
     }),
   });
   assert.equal(invalidEmployerType.status, 400);
+
+  const duplicatePayloadUpdate = await fetch(`${baseUrl}/api/jobs`, {
+    method: 'PUT',
+    headers: { ...auth, 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      jobs: [
+        { ...persistedJob, note: 'Catatan lama' },
+        {
+          ...persistedJob,
+          id: 2,
+          location: 'Jakarta',
+          status: 'in_process',
+          note: 'Catatan baru dari import',
+        },
+      ],
+    }),
+  });
+  assert.equal(duplicatePayloadUpdate.status, 200);
+  const jobsAfterDuplicate = await (await fetch(`${baseUrl}/api/jobs`, { headers: auth })).json();
+  assert.equal(jobsAfterDuplicate.jobs.length, 1);
+  assert.equal(jobsAfterDuplicate.jobs[0].id, 1);
+  assert.equal(jobsAfterDuplicate.jobs[0].note, 'Catatan baru dari import');
+  assert.equal(jobsAfterDuplicate.jobs[0].status, 'in_process');
+  assert.equal(jobsAfterDuplicate.jobs[0].location, 'Jakarta');
+  assert.equal(jobsAfterDuplicate.jobs[0].sourceUrl, persistedJob.sourceUrl);
+  assert.equal(jobsAfterDuplicate.jobs[0].createdAt, persistedJob.createdAt);
+
+  // Reset back to persistedJob
+  await fetch(`${baseUrl}/api/jobs`, {
+    method: 'PUT',
+    headers: { ...auth, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ jobs: [persistedJob] }),
+  });
 
   await close(server);
   server = createServer({ dataFile, username: 'friend', role: 'user', password: 'test-password' });

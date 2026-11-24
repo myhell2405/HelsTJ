@@ -81,6 +81,7 @@ function validateJobs(value) {
       company: text('company', 200, true),
       role: text('role', 300, true),
       category: text('category', 100) || 'Lainnya',
+      location: text('location', 150) || 'Jabodetabek',
       sector: text('sector', 150),
       employerType,
       status,
@@ -211,6 +212,14 @@ function normalizeEmployerType(val) {
   return '';
 }
 
+function normalizeJobName(value) {
+  return value.normalize('NFKC').trim().replace(/\s+/g, ' ').toLocaleLowerCase('id');
+}
+
+function jobIdentity(job) {
+  return JSON.stringify([normalizeJobName(job.company), normalizeJobName(job.role)]);
+}
+
 function parseCsv(text) {
   const lines = [];
   let row = [''];
@@ -304,10 +313,15 @@ function parseMatrixToJobs(matrix) {
       continue;
     }
 
+    const hasExplicitCategory = Boolean(rowObj.category && String(rowObj.category).trim());
+    const hasExplicitLocation = Boolean(rowObj.location && String(rowObj.location).trim());
+    const hasExplicitStatus = Boolean(rowObj.status && String(rowObj.status).trim());
+
     jobs.push({
       company,
       role,
       category: String(rowObj.category || '').trim() || 'Lainnya',
+      location: String(rowObj.location || '').trim() || 'Jabodetabek',
       sector: String(rowObj.sector || '').trim(),
       employerType: normalizeEmployerType(rowObj.employerType),
       status: normalizeStatus(rowObj.status),
@@ -319,6 +333,9 @@ function parseMatrixToJobs(matrix) {
       appliedDate: String(rowObj.appliedDate || '').trim(),
       createdAt: String(rowObj.createdAt || '').trim(),
       createdBy: String(rowObj.createdBy || '').trim(),
+      hasExplicitCategory,
+      hasExplicitLocation,
+      hasExplicitStatus,
     });
   }
 
@@ -609,7 +626,31 @@ function createServer(options = {}) {
 
       if (pathname === '/api/jobs' && request.method === 'PUT') {
         const body = await readJsonBody(request);
-        const submittedJobs = validateJobs(body?.jobs);
+        const rawSubmittedJobs = validateJobs(body?.jobs);
+        const deduplicatedSubmitted = [];
+        const submittedIndexByIdentity = new Map();
+        const previousById = new Map(jobs.map((job) => [job.id, job]));
+        for (const job of rawSubmittedJobs) {
+          const identity = jobIdentity(job);
+          if (submittedIndexByIdentity.has(identity)) {
+            const existingIdx = submittedIndexByIdentity.get(identity);
+            const existingJob = deduplicatedSubmitted[existingIdx];
+            const targetId = previousById.has(existingJob.id)
+              ? existingJob.id
+              : (previousById.has(job.id) ? job.id : existingJob.id);
+            deduplicatedSubmitted[existingIdx] = {
+              ...existingJob,
+              ...job,
+              id: targetId,
+              createdAt: existingJob.createdAt || job.createdAt,
+              createdBy: existingJob.createdBy || job.createdBy,
+            };
+          } else {
+            submittedIndexByIdentity.set(identity, deduplicatedSubmitted.length);
+            deduplicatedSubmitted.push(job);
+          }
+        }
+        const submittedJobs = deduplicatedSubmitted;
         const operation = saveQueue.then(async () => {
           const previousJobs = jobs;
           const previousById = new Map(jobs.map((job) => [job.id, job]));

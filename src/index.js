@@ -487,6 +487,10 @@ function parseMatrixToJobs(matrix) {
       continue;
     }
 
+    const hasExplicitCategory = Boolean(rowObj.category && String(rowObj.category).trim());
+    const hasExplicitLocation = Boolean(rowObj.location && String(rowObj.location).trim());
+    const hasExplicitStatus = Boolean(rowObj.status && String(rowObj.status).trim());
+
     jobs.push({
       company,
       role,
@@ -503,6 +507,9 @@ function parseMatrixToJobs(matrix) {
       appliedDate: String(rowObj.appliedDate || '').trim(),
       createdAt: String(rowObj.createdAt || '').trim(),
       createdBy: String(rowObj.createdBy || '').trim(),
+      hasExplicitCategory,
+      hasExplicitLocation,
+      hasExplicitStatus,
     });
   }
 
@@ -979,14 +986,37 @@ async function route(request, env) {
       }
     }
     const previousById = new Map(previousJobs.map((job) => [job.id, job]));
-    const submittedIds = new Set(submittedJobs.map((job) => job.id));
+    const deduplicatedSubmitted = [];
+    const submittedIndexByIdentity = new Map();
     for (const job of submittedJobs) {
-      const previous = previousById.get(job.id);
-      if (!previous || jobIdentity(previous) !== jobIdentity(job)) {
-        assertNoDuplicateJob(job, submittedJobs, job.id);
+      const identity = jobIdentity(job);
+      if (submittedIndexByIdentity.has(identity)) {
+        const existingIdx = submittedIndexByIdentity.get(identity);
+        const existingJob = deduplicatedSubmitted[existingIdx];
+        const targetId = previousById.has(existingJob.id)
+          ? existingJob.id
+          : (previousById.has(job.id) ? job.id : existingJob.id);
+        deduplicatedSubmitted[existingIdx] = {
+          ...existingJob,
+          ...job,
+          id: targetId,
+          createdAt: existingJob.createdAt || job.createdAt,
+          createdBy: existingJob.createdBy || job.createdBy,
+        };
+      } else {
+        submittedIndexByIdentity.set(identity, deduplicatedSubmitted.length);
+        deduplicatedSubmitted.push(job);
       }
     }
-    const jobs = submittedJobs.map((job) => {
+    const finalSubmittedJobs = deduplicatedSubmitted;
+    const submittedIds = new Set(finalSubmittedJobs.map((job) => job.id));
+    for (const job of finalSubmittedJobs) {
+      const previous = previousById.get(job.id);
+      if (!previous || jobIdentity(previous) !== jobIdentity(job)) {
+        assertNoDuplicateJob(job, finalSubmittedJobs, job.id);
+      }
+    }
+    const jobs = finalSubmittedJobs.map((job) => {
       const previous = previousById.get(job.id);
       return {
         ...job,
@@ -994,7 +1024,7 @@ async function route(request, env) {
       };
     });
     const activities = [];
-    for (const job of submittedJobs) {
+    for (const job of finalSubmittedJobs) {
       const previous = previousById.get(job.id);
       if (!previous) {
         activities.push({

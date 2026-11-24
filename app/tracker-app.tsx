@@ -62,7 +62,12 @@ type Session = { username: string; role: string } | null;
 type Page = "dashboard" | "companies" | "jobs" | "users" | "activity" | "todos";
 
 type Submitter = { name: string; relationship: string };
-type ImportPreview = { jobs: Partial<Job>[]; totalRows: number; skippedRows: number; fileName: string };
+type ImportedJobDraft = Partial<Job> & {
+  hasExplicitStatus?: boolean;
+  hasExplicitCategory?: boolean;
+  hasExplicitLocation?: boolean;
+};
+type ImportPreview = { jobs: ImportedJobDraft[]; totalRows: number; skippedRows: number; fileName: string };
 
 const EMPTY_JOB: Omit<Job, "id"> = {
   company: "",
@@ -658,7 +663,14 @@ export default function TrackerApp() {
       if (!Array.isArray(result.jobs) || result.jobs.length === 0) {
         throw new Error("File tidak berisi lowongan valid yang bisa diimpor.");
       }
-      if (jobs.length + result.jobs.length > 2000) {
+      const existingKeys = new Set(jobs.map((j) => `${normalizeJobName(j.company)}:::${normalizeJobName(j.role)}`));
+      const incomingUniqueNew = new Set(
+        result.jobs
+          .filter((j) => j.company && j.role)
+          .map((j) => `${normalizeJobName(j.company || "")}:::${normalizeJobName(j.role || "")}`)
+          .filter((k) => !existingKeys.has(k))
+      );
+      if (jobs.length + incomingUniqueNew.size > 2000) {
         throw new Error("Jumlah lowongan akan melebihi batas 2.000 entri.");
       }
       setImportPreview({
@@ -675,26 +687,122 @@ export default function TrackerApp() {
     }
   }
 
+  const importStats = useMemo(() => {
+    if (!importPreview) return { added: 0, updated: 0, total: 0 };
+    const seen = new Set<string>();
+    let added = 0;
+    let updated = 0;
+    const existingKeys = new Set(
+      jobs.map((j) => `${normalizeJobName(j.company)}:::${normalizeJobName(j.role)}`)
+    );
+    for (const j of importPreview.jobs) {
+      const company = (j.company || "").trim();
+      const role = (j.role || "").trim();
+      if (!company || !role) continue;
+      const key = `${normalizeJobName(company)}:::${normalizeJobName(role)}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      if (existingKeys.has(key)) {
+        updated++;
+      } else {
+        added++;
+      }
+    }
+    return { added, updated, total: seen.size };
+  }, [importPreview, jobs]);
+
   async function applyImport() {
     if (!importPreview) return;
     setImportBusy(true);
     const now = new Date();
     const date = now.toISOString().slice(0, 10);
-    const startingId = Math.max(0, ...jobs.map((job) => job.id));
-    const importedJobs: Job[] = importPreview.jobs.map((job, index) => ({
-      ...EMPTY_JOB,
-      ...job,
-      id: startingId + index + 1,
-      category: job.category?.trim() || "Lainnya",
-      location: job.location?.trim() || "Jabodetabek",
-      createdAt: job.createdAt || now.toISOString(),
-      createdBy: session?.username || "",
-      updated: date,
-    }));
+    const existingIndexByKey = new Map<string, number>();
+    jobs.forEach((job, index) => {
+      const key = `${normalizeJobName(job.company)}:::${normalizeJobName(job.role)}`;
+      if (!existingIndexByKey.has(key)) {
+        existingIndexByKey.set(key, index);
+      }
+    });
+
+    const nextJobs: Job[] = [...jobs];
+    let nextId = Math.max(0, ...jobs.map((job) => job.id));
+    let updatedCount = 0;
+    let addedCount = 0;
+
+    for (const incoming of importPreview.jobs) {
+      const company = (incoming.company || "").trim();
+      const role = (incoming.role || "").trim();
+      if (!company || !role) continue;
+      const key = `${normalizeJobName(company)}:::${normalizeJobName(role)}`;
+
+      if (existingIndexByKey.has(key)) {
+        const idx = existingIndexByKey.get(key)!;
+        const existing = nextJobs[idx];
+        const hasExplicitCategory = Boolean(incoming.hasExplicitCategory ?? (incoming.category && incoming.category.trim() !== "Lainnya"));
+        const hasExplicitLocation = Boolean(incoming.hasExplicitLocation ?? (incoming.location && incoming.location.trim() !== "Jabodetabek"));
+        const hasExplicitStatus = Boolean(incoming.hasExplicitStatus ?? (incoming.status && incoming.status.trim() !== "to_apply"));
+
+        nextJobs[idx] = {
+          ...existing,
+          ...incoming,
+          id: existing.id,
+          company,
+          role,
+          category: hasExplicitCategory ? (incoming.category?.trim() || "Lainnya") : (existing.category || "Lainnya"),
+          location: hasExplicitLocation ? (incoming.location?.trim() || "Jabodetabek") : (existing.location || "Jabodetabek"),
+          sector: incoming.sector?.trim() || existing.sector || "",
+          employerType: incoming.employerType?.trim() || existing.employerType || "",
+          status: hasExplicitStatus ? (incoming.status?.trim() || "to_apply") : (existing.status || "to_apply"),
+          deadline: incoming.deadline?.trim() || existing.deadline || "",
+          source: incoming.source?.trim() || existing.source || "",
+          sourceUrl: incoming.sourceUrl?.trim() || existing.sourceUrl || "",
+          applicationUrl: incoming.applicationUrl?.trim() || existing.applicationUrl || "",
+          note: incoming.note?.trim() || existing.note || "",
+          appliedDate: incoming.appliedDate?.trim() || existing.appliedDate || "",
+          createdAt: existing.createdAt || incoming.createdAt || now.toISOString(),
+          createdBy: existing.createdBy || session?.username || "",
+          updated: date,
+        };
+        updatedCount++;
+      } else {
+        nextId++;
+        const newJob: Job = {
+          ...EMPTY_JOB,
+          ...incoming,
+          id: nextId,
+          company,
+          role,
+          category: incoming.category?.trim() || "Lainnya",
+          location: incoming.location?.trim() || "Jabodetabek",
+          sector: incoming.sector?.trim() || "",
+          employerType: incoming.employerType?.trim() || "",
+          status: incoming.status?.trim() || "to_apply",
+          deadline: incoming.deadline?.trim() || "",
+          source: incoming.source?.trim() || "",
+          sourceUrl: incoming.sourceUrl?.trim() || "",
+          applicationUrl: incoming.applicationUrl?.trim() || "",
+          note: incoming.note?.trim() || "",
+          appliedDate: incoming.appliedDate?.trim() || "",
+          createdAt: incoming.createdAt || now.toISOString(),
+          createdBy: session?.username || "",
+          updated: date,
+        };
+        nextJobs.push(newJob);
+        existingIndexByKey.set(key, nextJobs.length - 1);
+        addedCount++;
+      }
+    }
+
     try {
-      await saveJobs([...jobs, ...importedJobs]);
+      await saveJobs(nextJobs);
       setImportPreview(null);
-      notify(`${importedJobs.length} lowongan berhasil diimpor.`);
+      if (updatedCount > 0 && addedCount > 0) {
+        notify(`${addedCount} lowongan baru ditambahkan, ${updatedCount} lowongan duplikat diperbarui.`);
+      } else if (updatedCount > 0) {
+        notify(`${updatedCount} lowongan duplikat berhasil diperbarui dengan data baru.`);
+      } else {
+        notify(`${addedCount} lowongan berhasil diimpor.`);
+      }
     } catch (error) {
       notify(error instanceof Error ? error.message : "Lowongan gagal diimpor.");
     } finally {
@@ -1137,21 +1245,44 @@ export default function TrackerApp() {
       {jobModal !== null && session?.role === "admin" && <Modal title={jobModal === "new" ? "Tambah lowongan" : "Edit lowongan"} description="Detail lowongan akan tersimpan di tracker bersama." onClose={() => setJobModal(null)}>
         <JobFields initial={jobModal === "new" ? EMPTY_JOB : jobModal} submitLabel={jobModal === "new" ? "Tambah lowongan" : "Simpan perubahan"} onSubmit={saveJob} />
       </Modal>}
-      {importPreview && <Modal title="Pratinjau impor lowongan" description={`File: ${importPreview.fileName}. Data lama tetap dipertahankan; lowongan dari file akan ditambahkan.`} onClose={() => !importBusy && setImportPreview(null)}>
+      {importPreview && <Modal
+        title="Pratinjau impor lowongan"
+        description={`File: ${importPreview.fileName}. Data lama tetap dipertahankan; jika ada duplikat (perusahaan dan posisi sama), data baru dari file akan digunakan.`}
+        onClose={() => !importBusy && setImportPreview(null)}
+      >
         <div className="import-summary">
-          <span><strong>{importPreview.jobs.length}</strong> lowongan siap ditambahkan</span>
+          <span>
+            <strong>{importStats.total}</strong> lowongan siap diproses
+            {importStats.updated > 0 ? ` (${importStats.added} baru, ${importStats.updated} pembaruan duplikat)` : ""}
+          </span>
           <span>{importPreview.totalRows} baris dibaca · {importPreview.skippedRows} baris dilewati</span>
         </div>
         <div className="table-wrap import-preview-table"><table>
           <thead><tr><th>PERUSAHAAN</th><th>POSISI</th><th>LOKASI</th><th>STATUS</th></tr></thead>
-          <tbody>{importPreview.jobs.slice(0, 5).map((job, index) => <tr key={`${job.company}-${job.role}-${index}`}>
-            <td className="table-primary">{job.company}</td><td>{job.role}</td><td>{job.location || "Jabodetabek"}</td><td>{STATUS_LABELS[job.status || "to_apply"] || "Belum dilamar"}</td>
-          </tr>)}</tbody>
+          <tbody>{importPreview.jobs.slice(0, 5).map((job, index) => {
+            const isDup = jobs.some(
+              (j) => normalizeJobName(j.company) === normalizeJobName(job.company || "")
+                && normalizeJobName(j.role) === normalizeJobName(job.role || "")
+            );
+            return (
+              <tr key={`${job.company}-${job.role}-${index}`}>
+                <td className="table-primary">
+                  {job.company}
+                  {isDup && <span className="pill verify" style={{ marginLeft: 8, fontSize: 10 }}>Pembaruan</span>}
+                </td>
+                <td>{job.role}</td>
+                <td>{job.location || "Jabodetabek"}</td>
+                <td>{STATUS_LABELS[job.status || "to_apply"] || "Belum dilamar"}</td>
+              </tr>
+            );
+          })}</tbody>
         </table></div>
         {importPreview.jobs.length > 5 && <p className="table-secondary">Menampilkan 5 dari {importPreview.jobs.length} lowongan.</p>}
         <div className="dialog-actions">
           <button className="button button-secondary" disabled={importBusy} onClick={() => setImportPreview(null)}>Batal</button>
-          <button className="button button-primary" disabled={importBusy} onClick={() => void applyImport()}>{importBusy ? "Mengimpor..." : `Konfirmasi impor ${importPreview.jobs.length} lowongan`}</button>
+          <button className="button button-primary" disabled={importBusy} onClick={() => void applyImport()}>
+            {importBusy ? "Mengimpor..." : `Konfirmasi impor ${importStats.total} lowongan`}
+          </button>
         </div>
       </Modal>}
       {suggestModal && <Modal title="Bagikan lowongan" description="Kenalkan dirimu dahulu, lalu isi detail lowongan. Semua kiriman menunggu konfirmasi Helmy." onClose={() => setSuggestModal(false)}>
