@@ -476,6 +476,9 @@ test('inline browser script is valid JavaScript', async () => {
   assert.ok(script, 'The app script should exist.');
   assert.ok(scripts.length > 0, 'The app script should exist.');
   scripts.forEach((source) => assert.doesNotThrow(() => new vm.Script(source)));
+  assert.doesNotMatch(html, /\bseed\b|data\/jobs\.json/);
+  assert.match(script, /return Array\.isArray\(x\)\?x:\[\]/);
+  assert.match(script, /jobs=\[\];apiReady=true/);
   assert.match(html, /data-activity-id=/);
   assert.match(html, /method:'DELETE'/);
   assert.match(html, /<nav id="adminNav" class="admin-nav" aria-label="Navigasi admin" hidden>/);

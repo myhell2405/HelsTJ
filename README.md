@@ -64,17 +64,12 @@ Persyaratan: Node.js 22 atau lebih baru dan npm.
    npx wrangler secret put ADMIN_PASSWORD
    ```
    Gunakan username 3–32 karakter dan kata sandi unik minimal 12 karakter (16+ disarankan). Jangan taruh secret di source code atau file konfigurasi.
-5. Jika ingin mengimpor data tracker awal dari `data/jobs.json`, lakukan sebelum deploy:
-   ```powershell
-   npm run cf:db:import
-   ```
-   Import hanya mengisi tracker yang masih kosong; data D1 yang sudah ada tidak ditimpa.
-6. Build antarmuka Next.js dan deploy Worker:
+5. Build antarmuka Next.js dan deploy Worker:
    ```powershell
    npm run cf:deploy
    ```
 
-`wrangler.toml` mengatur aset statis hasil ekspor Next.js dari folder `out`. Admin bootstrap dibuat otomatis saat login pertama pada database yang belum memiliki admin. Setelah itu, akun tambahan dapat dibuat melalui dashboard. Gunakan HTTPS dan jangan menghapus database D1 karena berisi akun, sesi, serta data tracker.
+`wrangler.toml` mengatur aset statis hasil ekspor Next.js dari folder `out`. Lowongan baru hanya ditambahkan melalui formulir atau fitur impor di aplikasi; tidak ada data lowongan yang disisipkan saat build atau deploy. Admin bootstrap dibuat otomatis saat login pertama pada database yang belum memiliki admin. Setelah itu, akun tambahan dapat dibuat melalui dashboard. Gunakan HTTPS dan jangan menghapus database D1 karena berisi akun, sesi, serta data tracker.
 
 ## Catatan keamanan
 
@@ -91,5 +86,4 @@ Persyaratan: Node.js 22 atau lebih baru dan npm.
 - `npm run build` — build dan ekspor situs statis Next.js ke `out`.
 - `npm test` — jalankan tes aplikasi.
 - `npm run cf:db:migrate` — terapkan migrasi D1 remote.
-- `npm run cf:db:import` — impor data awal tracker.
 - `npm run cf:deploy` — build dan deploy ke Cloudflare Workers.

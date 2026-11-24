@@ -11,8 +11,7 @@
     "test": "node --test",
     "cf:dev": "npm run build && wrangler dev",
     "cf:deploy": "npm run build && wrangler deploy",
-    "cf:db:migrate": "wrangler d1 migrations apply helmy-job-tracker --remote",
-    "cf:db:import": "node scripts/import-jobs-to-d1.js"
+    "cf:db:migrate": "wrangler d1 migrations apply helmy-job-tracker --remote"
   },
   "engines": {
     "node": ">=22"
