@@ -478,20 +478,23 @@ function JobTable({
   if (!jobs.length) return <div className="empty-state">Belum ada lowongan untuk ditampilkan.</div>;
   return (
     <div className="table-wrap"><table>
-      <thead><tr><th>POSISI</th><th>PERUSAHAAN</th><th>LOKASI</th><th>STATUS</th><th>BATAS WAKTU</th><th>AKSI</th></tr></thead>
-      <tbody>{jobs.map((job) => <tr key={job.id}>
+      <thead><tr><th>POSISI</th><th>PERUSAHAAN</th><th>LOKASI</th><th>STATUS</th><th>BATAS WAKTU</th><th>URL</th><th>AKSI</th></tr></thead>
+      <tbody>{jobs.map((job) => {
+        const jobUrl = safeExternalUrl(job.applicationUrl) || safeExternalUrl(job.sourceUrl);
+        return <tr key={job.id}>
         <td><div className="table-primary">{job.role}</div><div className="table-secondary">{job.category}</div></td>
         <td>{job.company}</td><td>{job.location || "Jabodetabek"}</td>
         <td><select className="control" aria-label={`Status ${job.role}`} value={job.status} onChange={(event) => onStatus(job, event.target.value)}>
           {Object.entries(STATUS_LABELS).map(([key, label]) => <option value={key} key={key}>{label}</option>)}
         </select></td>
         <td>{job.deadline || "—"}</td>
+        <td>{jobUrl ? <a className="table-url" href={jobUrl} target="_blank" rel="noopener noreferrer">{jobUrl}</a> : "—"}</td>
         <td><div className="row-actions">
-          {job.applicationUrl && <a className="small-button" href={job.applicationUrl} target="_blank" rel="noreferrer">Link <ChevronRight size={12} /></a>}
           <button className="small-button" onClick={() => onEdit(job)} aria-label={`Edit ${job.role}`}>Edit</button>
           <button className="small-button" onClick={() => onDelete(job)} aria-label={`Hapus ${job.role}`}><Trash2 size={13} /></button>
         </div></td>
-      </tr>)}</tbody>
+      </tr>;
+      })}</tbody>
     </table></div>
   );
 }
